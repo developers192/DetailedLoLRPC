@@ -1,0 +1,11 @@
+*.exe
+*.ico
+*.lnk
+*.spec
+*.bat
+*.txt
+
+.vscode/
+__pycache__/
+build/
+dist/
