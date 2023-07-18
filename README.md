@@ -17,9 +17,9 @@
   <p align="center">
     A better Discord Rich Presence for League of Legends.
     <br />
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
+    <a href="https://github.com/developers192/DetailedLoLRPC/issues">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/developers192/DetailedLoLRPC/issues">Request Feature</a>
   </p>
 </div>
 
