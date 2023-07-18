@@ -33,6 +33,12 @@ I've been playing League for quite some time now, and while using Discord's Rich
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Features
+- Display your current skin instead of default splash arts
+- Updated spash arts for outdated ones
+- Proper slash arts for newer champions
+- More detailed mode texts (Ranked Solo/Duo/Flex, TFT Double Up, ...)
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
