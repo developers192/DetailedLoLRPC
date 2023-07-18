@@ -4,9 +4,7 @@ from os import path as op
 clientId = "1118062711687872593"
 
 def resourcePath(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
     except Exception:
         base_path = op.abspath(".")
