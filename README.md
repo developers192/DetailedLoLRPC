@@ -1,7 +1,7 @@
 <a name="readme-top"></a>
 
 [![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
+[![Github All Releases](https://img.shields.io/github/downloads/developers192/DetailedLoLRPC/total.svg)]()
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
