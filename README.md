@@ -35,8 +35,8 @@ I've been playing League for quite some time now, and while using Discord's Rich
 
 ## Features
 - Display your current skin instead of default splash arts
-- Updated spash arts for outdated ones
-- Proper slash arts for newer champions
+- Updated splash arts for outdated ones
+- Proper splash arts for newer champions
 - More detailed mode texts (Ranked Solo/Duo/Flex, TFT Double Up, ...)
 
 <!-- GETTING STARTED -->
