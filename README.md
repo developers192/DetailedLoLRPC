@@ -68,7 +68,7 @@ To start using DetailedLoLRPC, follow these steps.
 
 You may move the shortcut created anywhere you please. Running that shortcut will launch League of Legends with it's native Rich Presence replaced with DetailedLoLRPC.
 
-Launching LoL from the Riot Client will use it's native Rich Presence implementation.
+Launching LoL from the Riot Client will use its native Rich Presence implementation.
 
 You can use the tray icon to close DetailedLoLRPC. Note that closing it will not re-enable the native Rich Presence until the next time you launch LoL using the Riot Client.
 
