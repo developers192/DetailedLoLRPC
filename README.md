@@ -88,7 +88,7 @@ When it detects the LoL Client, CPU usage will drop to ~0%. Memory usage is ~50M
 
 - [ ] Fix for KDA All Out Seraphine Skins
 - [ ] Proper practice tool texts
-- [ ] Update for upcoming Soul Fighter mode
+- [ ] Join lobby button on Discord
 - [ ] Option to toggle default splash arts
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -102,7 +102,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Disclaimer
-- I will not hold responsibility for any bans caused by DetailedLoLRPC. (In theory it won't happen because DetailedLoLRPC only uses the API provided by the Client itself. Although it does tamper with the `plugin-manifest.json` file to disable the native RPC, but I think it's [allowed](https://www.reddit.com/r/leagueoflegends/comments/awedjv/there_is_a_way_to_make_the_client/))
+- I will not hold responsibility for any bans caused by DetailedLoLRPC. (In theory it won't happen because DetailedLoLRPC only uses the API provided by the Client itself. Although it does tamper with the `plugin-manifest.json` file to disable the native RPC, I think it's [fine](https://www.reddit.com/r/leagueoflegends/comments/awedjv/there_is_a_way_to_make_the_client/))
 - DetailedLoLRPC is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
 
 
