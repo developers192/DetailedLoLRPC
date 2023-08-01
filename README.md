@@ -30,9 +30,6 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 <div align="center">
   <a href="https://github.com/developers192/DetailedLoLRPC">
     <img src="images/screenshot.png" alt="Logo">
