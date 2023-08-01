@@ -33,6 +33,12 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
+<div align="center">
+  <a href="https://github.com/developers192/DetailedLoLRPC">
+    <img src="images/screenshot.png" alt="Logo">
+  </a>
+</div>
+
 This project was created as a replacement for League of Legends' outdated Discord Rich Presence.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -108,8 +114,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Disclaimer
 - I will not hold responsibility for any bans caused by DetailedLoLRPC. (In theory it won't happen because DetailedLoLRPC only uses the API provided by the Client itself. Although it does tamper with the `plugin-manifest.json` file to disable the native RPC, I think it's [fine](https://www.reddit.com/r/leagueoflegends/comments/awedjv/there_is_a_way_to_make_the_client/))
 - DetailedLoLRPC is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[product-screenshot]: images/screenshot.png
