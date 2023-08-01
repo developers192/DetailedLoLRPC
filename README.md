@@ -6,7 +6,7 @@
 <a href="">![GitHub All Releases](https://img.shields.io/github/downloads/developers192/DetailedLoLRPC/total.svg?style=for-the-badge)</a>
 <a href="https://github.com/developers192/DetailedLoLRPC/stargazers">![Stargazers](https://img.shields.io/github/stars/developers192/DetailedLoLRPC.svg?style=for-the-badge)</a>
 <a href="https://github.com/developers192/DetailedLoLRPC/issues">![Issues](https://img.shields.io/github/issues/developers192/DetailedLoLRPC.svg?style=for-the-badge)</a>
-<a href="https://github.com/developers192/DetailedLoLRPC/issues">![MIT License](https://img.shields.io/github/license/developers192/DetailedLoLRPC.svg?style=for-the-badge)</a>
+<a href="https://github.com/developers192/DetailedLoLRPC/blob/master/LICENSE">![MIT License](https://img.shields.io/github/license/developers192/DetailedLoLRPC.svg?style=for-the-badge)</a>
 
 </div>
 
