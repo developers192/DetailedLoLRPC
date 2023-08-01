@@ -36,7 +36,6 @@ jobs:
                 echo $gist_id | gh secret set GIST_ID
                 echo ::set-output name=GIST::$gist_id
                 cp clone.json clone_before.json
-                git rm --ignore-unmatch  CLONE.md
               fi
           else
               echo "GIST_ID not found. Creating a gist..."
