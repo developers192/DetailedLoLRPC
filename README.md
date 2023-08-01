@@ -33,7 +33,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-I've been playing League for quite some time now, and while using Discord's Rich Presence feature to show off my gaming activity, I noticed something that bothered me. Some champions still had outdated splash arts displayed, and some weren't even updated properly. Another time, I thought to myself, "Wouldn't it be awesome if I could showcase my current skin instead of the default splash art?" And that's when I decided to take matters into my own hands.
+This project was created as a replacement for League of Legends' outdated Discord Rich Presence.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
