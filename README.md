@@ -1,10 +1,15 @@
 <a name="readme-top"></a>
 
-[![GitHub Clones](https://img.shields.io/badge/dynamic/json?color=success&label=CLONES&query=count&url=https://gist.githubusercontent.com/developers192/b391985b1bdc009521df62ba977b46e2/raw/clone.json&style=for-the-badge)][contributors-url]
-[![Github All Releases](https://img.shields.io/github/downloads/developers192/DetailedLoLRPC/total.svg?style=for-the-badge)]()
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
+<div align="center">
+
+<a href="https://github.com/developers192/DetailedLoLRPC/graphs/contributors">![GitHub Clones](https://img.shields.io/badge/dynamic/json?color=success&label=CLONES&query=count&url=https://gist.githubusercontent.com/developers192/b391985b1bdc009521df62ba977b46e2/raw/clone.json&style=for-the-badge)</a>
+<a href="">![GitHub All Releases](https://img.shields.io/github/downloads/developers192/DetailedLoLRPC/total.svg?style=for-the-badge)</a>
+<a href="https://github.com/developers192/DetailedLoLRPC/stargazers">![Stargazers](https://github.com/developers192/DetailedLoLRPC/stargazers)</a>
+<a href="https://github.com/developers192/DetailedLoLRPC/issues">![Issues](https://img.shields.io/github/issues/developers192/DetailedLoLRPC.svg?style=for-the-badge)</a>
+<a href="https://github.com/developers192/DetailedLoLRPC/issues">![MIT License](https://img.shields.io/github/license/developers192/DetailedLoLRPC.svg?style=for-the-badge)</a>
 [![MIT License][license-shield]][license-url]
+
+</div>
 
 <!-- PROJECT LOGO -->
 <br />
@@ -108,14 +113,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/developers192/DetailedLoLRPC.svg?style=for-the-badge
-[contributors-url]: https://github.com/developers192/DetailedLoLRPC/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/developers192/DetailedLoLRPC.svg?style=for-the-badge
-[forks-url]: https://github.com/developers192/DetailedLoLRPC/network/members
-[stars-shield]: https://img.shields.io/github/stars/developers192/DetailedLoLRPC.svg?style=for-the-badge
-[stars-url]: https://github.com/developers192/DetailedLoLRPC/stargazers
-[issues-shield]: https://img.shields.io/github/issues/developers192/DetailedLoLRPC.svg?style=for-the-badge
-[issues-url]: https://github.com/developers192/DetailedLoLRPC/issues
-[license-shield]: https://img.shields.io/github/license/developers192/DetailedLoLRPC.svg?style=for-the-badge
-[license-url]: https://github.com/developers192/DetailedLoLRPC/blob/master/LICENSE
 [product-screenshot]: images/screenshot.png
