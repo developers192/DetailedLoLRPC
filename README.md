@@ -45,6 +45,7 @@ This project was created as a replacement for League of Legends' outdated Discor
 - Updated splash arts for outdated ones
 - Proper splash arts for newer champions
 - More detailed mode texts (Ranked Solo/Duo/Flex, TFT Double Up, ...)
+
 And many more ...
 
 <!-- GETTING STARTED -->
