@@ -62,7 +62,7 @@ To start using DetailedLoLRPC, follow these steps.
 
 ### Installation & Usage
 
-1. Download the latest [Release](https://github.com/developers192/DetailedLoLRPC/releases/latest)
+1. Download the latest [Release](https://github.com/developers192/DetailedLoLRPC/releases/latest) (It might be flagged by your antivirus whitelist it if that's the case)
 2. Make sure LoL is not running. Run `DetailedLoLRPC.exe`
 3. If the Riot Client is not running, you'll have to manually specify the required path.
 4. League of Legends will now automatically run with its Rich Presence replaced with DetailedLoLRPC.
