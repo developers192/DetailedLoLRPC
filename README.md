@@ -76,6 +76,7 @@ You can right click the tray icon to toggle various settings:
 - "Use skin's splash and name": Display the current skin's splash and name on Discord. If disabled, default skin and champion name will be used instead.
 - "Show "View splash art" button": Display a button on Discord that allows viewing the current skin's splash.
 - "Exit": Exit DetailedLoLRPC (LoL's native RPC will not be re-enabled until the next time you start LoL using the Riot Client)
+
 If you change any settings while in the middle of a game, they will be applied the next time you start a game.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
