@@ -10,6 +10,9 @@ def mapIdimg(mapid: int):
 def skinImg(champId, skinId):
     return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-tiles/{champId}/{skinId}.jpg"
 
+def splashLink(champId, skinId):
+    return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/{champId}/{skinId}.jpg"
+
 def localeDiscordStrings(locale):
     if locale == "en_us":
         locale = "default"

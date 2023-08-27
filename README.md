@@ -45,6 +45,7 @@ This project was created as a replacement for League of Legends' outdated Discor
 - Updated splash arts for outdated ones
 - Proper splash arts for newer champions
 - More detailed mode texts (Ranked Solo/Duo/Flex, TFT Double Up, ...)
+- And many more 
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -58,35 +59,30 @@ To start using DetailedLoLRPC, follow these steps.
 - Discord
 
 
-### Installation
+### Installation & Usage
 
 1. Download the latest [Release](https://github.com/developers192/DetailedLoLRPC/releases/latest)
-2. Extract the two files `DetailedLoLRPC.exe` and `setup.exe` to a seperate folder
-3. Run the `setup.exe` executable
-4. If the Riot Client is not running, you'll have to manually specify the required path.
-5. A `League of Legends` shortcut should now be created in the same folder.
+2. Make sure LoL is not running. Run `DetailedLoLRPC.exe`
+3. If the Riot Client is not running, you'll have to manually specify the required path.
+4. League of Legends will now automatically run with its Rich Presence replaced with DetailedLoLRPC.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
 <!-- USAGE EXAMPLES -->
-## Usage
+## Options
 
-You may move the shortcut created anywhere you please. Running that shortcut will launch League of Legends with its native Rich Presence replaced with DetailedLoLRPC.
-
-Launching LoL from the Riot Client will use its native Rich Presence implementation.
-
-You can use the tray icon to close DetailedLoLRPC. Note that closing it will not re-enable the native Rich Presence until the next time you launch LoL using the Riot Client.
-
+You can right click the tray icon to toggle various settings:
+- "Use skin's splash and name": Display the current skin's splash and name on Discord. If disabled, default skin and champion name will be used instead.
+- "Show "View splash art" button": Display a button on Discord that allows viewing the current skin's splash.
+- "Exit": Exit DetailedLoLRPC (LoL's native RPC will not be re-enabled until the next time you start LoL using the Riot Client)
+If you change any settings while in the middle of a game, they will be applied the next time you start a game.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- Resource Usage -->
 ## Resource Usage
-First minute or two from starting, DetailedLoLRPC could use up to 25% of your CPU because it has to keep looking for the LoL Client.
-
-When it detects the LoL Client, CPU usage will drop to ~0%. Memory usage is ~50MB.
-
+CPU usage is ~0%. Memory usage is ~50MB.
+When first running, CPU usage could spike up to 25% for a few seconds 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -94,9 +90,7 @@ When it detects the LoL Client, CPU usage will drop to ~0%. Memory usage is ~50M
 ## To do
 
 - [ ] Fix for KDA All Out Seraphine Skins
-- [ ] Proper practice tool texts
 - [ ] Join lobby button on Discord
-- [ ] Option to toggle default splash arts
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
