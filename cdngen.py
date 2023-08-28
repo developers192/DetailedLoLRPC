@@ -8,6 +8,8 @@ def mapIdimg(mapid: int):
     return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/content/src/leagueclient/gamemodeassets/{conv[mapid]}/img/game-select-icon-active.png"
 
 def skinImg(champId, skinId):
+    if skinId / 1000 == champId:
+        return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png"
     return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-tiles/{champId}/{skinId}.jpg"
 
 def splashLink(champId, skinId):

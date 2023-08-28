@@ -1,11 +1,11 @@
 from lcu_driver import Connector
-from ultilities import *
+from ultilities import isOutdated, GITHUBURL, CLIENTID, QUESTSKINS, fetchConfig, procPath
 from cdngen import *
 from disabler import disableNativePresence
 from pypresence import Presence
 from time import time, sleep
 from aiohttp import request
-from os import _exit, system
+from os import _exit, system, path as op
 from tray_icon import icon
 from easygui import buttonbox
 from multiprocessing import Process, freeze_support
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 			sleep(1)
 			_exit(0)
 
-	RPC = Presence(client_id = clientId)
+	RPC = Presence(client_id = CLIENTID)
 
 	connector = Connector()
 
@@ -121,8 +121,13 @@ if __name__ == "__main__":
 							skinId += summoner["selectedSkinIndex"]
 						break
 
-				skinName = (await (await connection.request('get', f'/lol-champions/v1/inventories/{summonerId}/champions/{champId}/skins/{skinId}')).json())["name"]
-					
+				if skinId not in QUESTSKINS:
+					skinName = (await (await connection.request('get', f'/lol-champions/v1/inventories/{summonerId}/champions/{champId}/skins/{skinId}')).json())["name"]
+				else:
+					for skinTier in (await (await connection.request('get', f'/lol-champions/v1/inventories/{summonerId}/champions/{champId}/skins/{QUESTSKINS[skinId]}')).json())["questSkinInfo"]["tiers"]:
+						if skinTier["id"] == skinId:
+							skinName = skinTier["name"]
+				
 				RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
 						large_image = skinImg(champId, skinId), \
 						large_text = skinName, \

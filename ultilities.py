@@ -1,7 +1,6 @@
 import sys
 from psutil import process_iter as pi
 from os import listdir, path as op, getenv, makedirs, _exit
-from win32com.client import Dispatch
 from requests import get
 from pickle import load, dump
 from easygui import enterbox
@@ -14,7 +13,11 @@ DEFAULTCONFIG = {
 	"riotPath": ""
 }
 CONFIGDIR = op.join(getenv("APPDATA"), "DetailedLoLRPC", "config.dlrpc")
-clientId = "1118062711687872593"
+QUESTSKINS = {
+	147002: 147001,
+	147003: 147001
+}
+CLIENTID = "1118062711687872593"
 
 def resourcePath(relative_path):
 	try:
