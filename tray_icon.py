@@ -1,7 +1,7 @@
 from os import _exit
 from PIL import Image
 from pystray import Icon, Menu, MenuItem
-from ultilities import editConfig, fetchConfig, resourcePath
+from utilities import editConfig, fetchConfig, resourcePath
 
 img = Image.open(resourcePath("icon.ico"))
 

@@ -2,7 +2,7 @@ from json import load, dump
 from time import time
 from psutil import process_iter as pi
 from os import path as op
-from ultilities import procPath, fetchConfig
+from utilities import procPath, fetchConfig
 
 def disableNativePresence():
 	path = op.join(fetchConfig("riotPath"), "League of Legends", "Plugins", "plugin-manifest.json")

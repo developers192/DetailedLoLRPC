@@ -1,5 +1,5 @@
 from lcu_driver import Connector
-from ultilities import isOutdated, GITHUBURL, CLIENTID, QUESTSKINS, fetchConfig, procPath
+from utilities import isOutdated, GITHUBURL, CLIENTID, QUESTSKINS, fetchConfig, procPath
 from cdngen import *
 from disabler import disableNativePresence
 from pypresence import Presence
