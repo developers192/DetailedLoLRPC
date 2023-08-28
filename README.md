@@ -92,7 +92,6 @@ When first running, CPU usage could spike up to 25% for a few seconds
 <!-- To do -->
 ## To do
 
-- [ ] Fix for KDA All Out Seraphine Skins
 - [ ] Join lobby button on Discord
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
