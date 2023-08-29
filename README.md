@@ -32,7 +32,10 @@
 ## About The Project
 <div align="center">
   <a href="https://github.com/developers192/DetailedLoLRPC">
-    <img src="images/screenshot.png" alt="Logo">
+    <img src="images/screenshot.png" alt="Logo1">
+  </a>
+  <a href="https://github.com/developers192/DetailedLoLRPC">
+    <img src="images/screenshot2.png" alt="Logo2">
   </a>
 </div>
 
