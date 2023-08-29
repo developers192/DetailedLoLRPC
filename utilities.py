@@ -5,7 +5,7 @@ from requests import get
 from pickle import load, dump
 from easygui import enterbox
 
-VERSION = "v2.1"
+VERSION = "v2.2"
 GITHUBURL = "https://github.com/developers192/DetailedLoLRPC/releases/latest"
 DEFAULTCONFIG = {
 	"useSkinSplash": True,
@@ -84,4 +84,10 @@ def editConfig(entry, value):
 	data[entry] = value
 	with open(CONFIGDIR, "wb") as f:
 		dump(data, f)
+	return
+
+def resetConfig():
+	DEFAULTCONFIG["riotPath"] = getRiotPath()
+	with open(CONFIGDIR, "wb") as f:
+		dump(DEFAULTCONFIG, f)
 	return

@@ -40,6 +40,8 @@ if __name__ == "__main__":
 			if not summoner.status == 404:
 				summoner = await summoner.json()
 				break
+		print("Logged in")
+
 		internalName = summoner['internalName']
 		summonerId = summoner['summonerId']
 		region = await connection.request('get', '/riotclient/get_region_locale')
@@ -56,6 +58,7 @@ if __name__ == "__main__":
 			"custom": discord_strings["Disc_Pres_QueueType_CUSTOM"],
 			"practicetool": (await (await connection.request('get', '/lol-maps/v2/map/11/PRACTICETOOL')).json())["gameModeName"]
 		}
+		print("Loaded Discord Strings")
 
 	@connector.close
 	async def disconnect(_):
@@ -83,6 +86,7 @@ if __name__ == "__main__":
 			queueData['description'] = discStrings["practicetool"]
 
 		if phase == "Lobby":
+			if queueData["mapId"] == 0: return
 			RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
 					large_image = mapIdimg(queueData["mapId"]), \
 					large_text = mapData['name'], \
@@ -103,15 +107,24 @@ if __name__ == "__main__":
 					state = discStrings["champSelect"])
 			
 		elif phase == "InProgress":
-			# TFT handling (no skin images)
+			# TFT handling
 			if mapData["mapStringId"] == "TFT":
-				RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
-						large_image = mapIdimg(queueData["mapId"]), \
-						large_text = mapData['name'], \
-						state = discStrings["inGame"], \
-						start = time())
+				if fetchConfig("useSkinSplash"):
+					compData = (await (await connection.request('get', '/lol-cosmetics/v1/inventories/tft/companions')).json())["selectedLoadoutItem"]
+					RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
+							large_image = tftImg(compData["loadoutsIcon"]), \
+							large_text = compData['name'], \
+							state = discStrings["inGame"], \
+							start = time(), \
+							buttons = ([{"label": "View Splash Art", "url": tftImg(compData["loadoutsIcon"])}] if fetchConfig("showViewArtButton") else None))
+				else:
+					RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
+							large_image = mapIdimg(queueData["mapId"]), \
+							large_text = mapData['name'], \
+							state = discStrings["inGame"], \
+							start = time())
 				
-			# Other modes (with champion skin images)
+			# Other modes
 			else:
 				for summoner in gameData["playerChampionSelections"]:
 					if summoner["summonerInternalName"] == internalName:

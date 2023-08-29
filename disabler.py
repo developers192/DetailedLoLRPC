@@ -1,6 +1,5 @@
 from json import load, dump
 from time import time
-from psutil import process_iter as pi
 from os import path as op
 from utilities import procPath, fetchConfig
 

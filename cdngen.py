@@ -15,6 +15,10 @@ def skinImg(champId, skinId):
 def splashLink(champId, skinId):
     return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/{champId}/{skinId}.jpg"
 
+def tftImg(compDir):
+    name = compDir.split("/")[-1].lower()
+    return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/loadouts/companions/{name}"
+
 def localeDiscordStrings(locale):
     if locale == "en_us":
         locale = "default"
