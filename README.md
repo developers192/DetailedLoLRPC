@@ -38,8 +38,6 @@
 
 This project was created as a replacement for League of Legends' outdated Discord Rich Presence.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## Features
 - Display your current skin instead of default splash arts
 - Updated splash arts for outdated ones
@@ -67,8 +65,6 @@ To start using DetailedLoLRPC, follow these steps:
 3. If the Riot Client is not running, you'll have to manually specify the required path.
 4. League of Legends will now automatically run with its Rich Presence replaced with DetailedLoLRPC.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- USAGE EXAMPLES -->
 ## Options
@@ -80,7 +76,6 @@ You can right click the tray icon to toggle various settings:
 - "Exit": Exit DetailedLoLRPC (LoL's native RPC will not be re-enabled until the next time you start LoL using the Riot Client)
 
 If you change any settings while in the middle of a game, they will be applied the next time you start a game.
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- Resource Usage -->
 ## Resource Usage
@@ -88,23 +83,18 @@ CPU usage is ~0%. Memory usage is ~50MB.
 
 When first running, CPU usage could spike up to 25% for a few seconds 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 <!-- To do -->
 ## To do
 
 - [ ] Join lobby button on Discord
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## Disclaimer
 - I will not hold responsibility for any bans caused by DetailedLoLRPC. (In theory it won't happen because DetailedLoLRPC only uses the API provided by the Client itself. Although it does tamper with the `plugin-manifest.json` file to disable the native RPC, I think it's [fine](https://www.reddit.com/r/leagueoflegends/comments/awedjv/there_is_a_way_to_make_the_client/))
 - DetailedLoLRPC is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -17,15 +17,11 @@ def viewSplash(icon: Icon, query):
     state = fetchConfig("showViewArtButton")
     editConfig("showViewArtButton", not state)
 
-def reset(icon: Icon, query):
-    resetConfig()
-    fetchConfig("riotPath")
-
 icon = Icon("DetailedLoLRPC", img, "DetailedLoLRPC", 
             Menu(
                 MenuItem("Use Skin's splash and name", skinSplash, checked = lambda item: fetchConfig("useSkinSplash")),
                 MenuItem('Show "View splash art" button', viewSplash, checked = lambda item: fetchConfig("showViewArtButton")),
                 Menu.SEPARATOR,
-                MenuItem("Reset preferences", reset),
+                MenuItem("Reset preferences", resetConfig),
                 MenuItem("Exit", exitp),
                 ))
