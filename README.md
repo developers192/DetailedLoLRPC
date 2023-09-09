@@ -75,6 +75,7 @@ To start using DetailedLoLRPC, follow these steps:
 You can right click the tray icon to toggle various settings:
 - "Use skin's splash and name": Display the current skin's splash and name on Discord. If disabled, default skin and champion name will be used instead.
 - "Show "View splash art" button": Display a button on Discord that allows viewing the current skin's splash.
+- "Idle status": Choose an idling status to show on Discord (If this doesn't update first try, you can try creating and leaving a lobby)
 - "Reset preferences": Reset all settings to their default values. You have to use this if you want to move your Riot Games folder to another directory.
 - "Exit": Exit DetailedLoLRPC (LoL's native RPC will not be re-enabled until the next time you start LoL using the Riot Client)
 
