@@ -3,6 +3,7 @@
 *.spec
 *.bat
 *.txt
+*.json
 
 .vscode/
 __pycache__/

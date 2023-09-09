@@ -1,5 +1,5 @@
 from lcu_driver import Connector
-from utilities import isOutdated, GITHUBURL, CLIENTID, QUESTSKINS, fetchConfig, procPath
+from utilities import isOutdated, GITHUBURL, CLIENTID, fetchConfig, procPath
 from cdngen import *
 from disabler import disableNativePresence
 from pypresence import Presence
@@ -11,6 +11,7 @@ from easygui import buttonbox
 from multiprocessing import Process, freeze_support
 from subprocess import Popen, PIPE
 from nest_asyncio import apply
+from json import dump
 
 if __name__ == "__main__":
 
@@ -49,6 +50,8 @@ if __name__ == "__main__":
 
 		async with request("GET", localeDiscordStrings(locale)) as resp:
 			discord_strings = await resp.json()
+		async with request("GET", localeChatStrings(locale)) as resp:
+			chat_strings = await resp.json()
 		discStrings = {
 			"bot": discord_strings["Disc_Pres_QueueType_BOT"],
 			"champSelect": discord_strings["Disc_Pres_State_championSelect"],
@@ -56,7 +59,11 @@ if __name__ == "__main__":
 			"inGame": discord_strings["Disc_Pres_State_inGame"],
 			"inQueue": discord_strings["Disc_Pres_State_inQueue"],
 			"custom": discord_strings["Disc_Pres_QueueType_CUSTOM"],
-			"practicetool": (await (await connection.request('get', '/lol-maps/v2/map/11/PRACTICETOOL')).json())["gameModeName"]
+			"practicetool": (await (await connection.request('get', '/lol-maps/v2/map/11/PRACTICETOOL')).json())["gameModeName"],
+
+			"away": chat_strings["availability_away"],
+			"chat": chat_strings["availability_chat"],
+			"dnd": chat_strings["availability_dnd"]
 		}
 		print("Loaded Discord Strings")
 
@@ -71,10 +78,6 @@ if __name__ == "__main__":
 		queueData = gameData['queue']
 		mapData = data['map']
 		phase = data['phase']
-
-		if phase in ("None", "WaitingForStats", "TerminatedInError"):
-			RPC.clear()
-			return
 
 		lobbyMem = len(await (await connection.request('get', '/lol-lobby/v2/lobby/members')).json())
 
@@ -134,12 +137,28 @@ if __name__ == "__main__":
 							skinId += summoner["selectedSkinIndex"]
 						break
 
-				if skinId not in QUESTSKINS:
-					skinName = (await (await connection.request('get', f'/lol-champions/v1/inventories/{summonerId}/champions/{champId}/skins/{skinId}')).json())["name"]
-				else:
-					for skinTier in (await (await connection.request('get', f'/lol-champions/v1/inventories/{summonerId}/champions/{champId}/skins/{QUESTSKINS[skinId]}')).json())["questSkinInfo"]["tiers"]:
+				champSkins = await (await connection.request('get', f'/lol-champions/v1/inventories/{summonerId}/champions/{champId}/skins')).json()
+				for champSkin in champSkins:
+					if champSkin["id"] == skinId:
+						skinName = champSkin["name"]
+						break
+
+					_ok = False
+				
+					for skinTier in champSkin["questSkinInfo"]["tiers"]:
 						if skinTier["id"] == skinId:
 							skinName = skinTier["name"]
+							_ok = True
+							break
+					if _ok: break
+
+					for chroma in champSkin["chromas"]:
+						if chroma["id"] == skinId:
+							skinName = champSkin["name"]
+							skinId = champSkin["id"]
+							_ok = True
+							break
+					if _ok: break
 				
 				RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
 						large_image = skinImg(champId, skinId), \
@@ -147,6 +166,25 @@ if __name__ == "__main__":
 						state = discStrings["inGame"], \
 						start = time(), 
 						buttons = ([{"label": "View Splash Art", "url": splashLink(champId, skinId)}] if fetchConfig("showViewArtButton") else None))
+
+	@connector.ws.register("/lol-chat/v1/me", event_types = ("CREATE", "UPDATE", "DELETE"))
+	async def chatUpdate(connection, event):
+		data = event.data
+		phase = (await (await connection.request('get', '/lol-gameflow/v1/gameflow-phase')).json())
+		if phase in ("None", "WaitingForStats", "TerminatedInError"):
+			availability = data["availability"]
+			option = fetchConfig("idleStatus")
+			if option == 0:
+				RPC.clear()
+			elif option == 1:
+				RPC.update(state = discStrings[availability], 
+	       					large_image = availabilityImg("leagueIcon"), 
+							small_image = availabilityImg(availability),)
+			elif option == 2:
+				RPC.update(state = discStrings[availability], 
+	       					large_image = profileIcon(data["icon"]), 
+						    large_text = f"{data['name']} - Lvl {data['lol']['level']}",
+							small_image = availabilityImg(availability),)
 
 	# Detect if game has started
 	isLeagueOpened = procPath("LeagueClient.exe")

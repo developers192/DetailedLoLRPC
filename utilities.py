@@ -5,18 +5,15 @@ from requests import get
 from pickle import load, dump
 from easygui import enterbox
 
-VERSION = "v2.2"
+VERSION = "v2.3"
 GITHUBURL = "https://github.com/developers192/DetailedLoLRPC/releases/latest"
 DEFAULTCONFIG = {
 	"useSkinSplash": True,
 	"showViewArtButton": False,
+	"idleStatus": 0,
 	"riotPath": ""
 }
 CONFIGDIR = op.join(getenv("APPDATA"), "DetailedLoLRPC", "config.dlrpc")
-QUESTSKINS = {
-	147002: 147001,
-	147003: 147001
-}
 CLIENTID = "1118062711687872593"
 
 def resourcePath(relative_path):

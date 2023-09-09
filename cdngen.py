@@ -23,3 +23,20 @@ def localeDiscordStrings(locale):
     if locale == "en_us":
         locale = "default"
     return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/{locale}/v1/discord_strings.json"
+
+def localeChatStrings(locale):
+    if locale == "en_us":
+        locale = "default"
+    return f"https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-social/global/{locale}/trans.json"
+
+def profileIcon(id):
+    return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/{id}.jpg"
+
+def availabilityImg(a):
+    conv = {
+        "chat": "https://i.imgur.com/I2XxZ5y.png",
+        "away": "https://i.imgur.com/X5YwSxs.png",
+        "dnd": "https://i.imgur.com/5I4uDSL.png",
+        "leagueIcon": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/LoL_icon.svg/256px-LoL_icon.svg.png"
+    }
+    return conv[a]
