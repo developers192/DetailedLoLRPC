@@ -5,7 +5,7 @@ from requests import get
 from pickle import load, dump
 from easygui import enterbox
 
-VERSION = "v2.3"
+VERSION = "v2.4"
 GITHUBURL = "https://github.com/developers192/DetailedLoLRPC/releases/latest"
 DEFAULTCONFIG = {
 	"useSkinSplash": True,

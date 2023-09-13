@@ -11,7 +11,6 @@ from easygui import buttonbox
 from multiprocessing import Process, freeze_support
 from subprocess import Popen, PIPE
 from nest_asyncio import apply
-from json import dump
 
 if __name__ == "__main__":
 
@@ -45,13 +44,14 @@ if __name__ == "__main__":
 
 		internalName = summoner['internalName']
 		summonerId = summoner['summonerId']
-		region = await connection.request('get', '/riotclient/get_region_locale')
+		region = await connection.request('get', '/riotclient/region-locale')
 		locale = (await region.json())['locale'].lower()
 
 		async with request("GET", localeDiscordStrings(locale)) as resp:
 			discord_strings = await resp.json()
 		async with request("GET", localeChatStrings(locale)) as resp:
 			chat_strings = await resp.json()
+
 		discStrings = {
 			"bot": discord_strings["Disc_Pres_QueueType_BOT"],
 			"champSelect": discord_strings["Disc_Pres_State_championSelect"],
