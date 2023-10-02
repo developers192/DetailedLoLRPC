@@ -1,7 +1,7 @@
-from os import _exit
+from os import _exit, system, startfile, path as op
 from PIL import Image
 from pystray import Icon, Menu, MenuItem
-from utilities import editConfig, fetchConfig, resourcePath, resetConfig
+from utilities import editConfig, fetchConfig, resourcePath, resetConfig, ISSUESURL, LOGDIR
 
 img = Image.open(resourcePath("icon.ico"))
 
@@ -26,6 +26,10 @@ def idleStatus(icon: Icon, query):
         val = 2
     editConfig("idleStatus", val)
 
+def rpbug(icon: Icon, query):
+    system(f"start \"\" {ISSUESURL}")
+    startfile(op.dirname(LOGDIR))
+
 icon = Icon("DetailedLoLRPC", img, "DetailedLoLRPC", 
             Menu(
                 MenuItem("Use Skin's splash and name", skinSplash, checked = lambda item: fetchConfig("useSkinSplash")),
@@ -37,5 +41,6 @@ icon = Icon("DetailedLoLRPC", img, "DetailedLoLRPC",
                 )),
                 Menu.SEPARATOR,
                 MenuItem("Reset preferences", resetConfig),
+                MenuItem("Report bug", rpbug),
                 MenuItem("Exit", exitp),
                 ))

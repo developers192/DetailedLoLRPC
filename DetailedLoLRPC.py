@@ -1,5 +1,5 @@
 from lcu_driver import Connector
-from utilities import isOutdated, GITHUBURL, CLIENTID, fetchConfig, procPath
+from utilities import isOutdated, GITHUBURL, CLIENTID, fetchConfig, procPath, resetLog, addLog, resourcePath
 from cdngen import *
 from disabler import disableNativePresence
 from pypresence import Presence
@@ -18,10 +18,14 @@ if __name__ == "__main__":
 
 	apply()
 
+	resetLog()
+
+	fetchConfig("riotPath")
+
 	# Check for updates
 	outdated = isOutdated()
 	if outdated:
-		choice = buttonbox(f"A newer version of DetailedLoLRPC detected ({outdated}). Do you want to visit the download site?", "DetailedLoLRPC", ("Yes", "No"), cancel_choice = "No")
+		choice = buttonbox(f"A newer version of DetailedLoLRPC detected ({outdated}). Do you want to visit the download site?", "DetailedLoLRPC", ("Yes", "No"), cancel_choice = "No", icon=resourcePath("icon.ico"))
 		if choice == "Yes":
 			system(f"start \"\" {GITHUBURL}")
 			sleep(1)
@@ -34,7 +38,7 @@ if __name__ == "__main__":
 	@connector.ready
 	async def connect(connection):
 		print("Inited")
-		global internalName, summonerId, discStrings
+		global internalName, summonerId, discStrings, displayName
 		while True:
 			summoner = await connection.request('get', '/lol-summoner/v1/current-summoner')
 			if not summoner.status == 404:
@@ -44,8 +48,11 @@ if __name__ == "__main__":
 
 		internalName = summoner['internalName']
 		summonerId = summoner['summonerId']
+		displayName = summoner['displayName']
 		region = await connection.request('get', '/riotclient/region-locale')
 		locale = (await region.json())['locale'].lower()
+
+		addLog({"internalName": internalName, "displayName": displayName, "summonerId": summonerId, "locale": locale})
 
 		async with request("GET", localeDiscordStrings(locale)) as resp:
 			discord_strings = await resp.json()
@@ -74,6 +81,7 @@ if __name__ == "__main__":
 	@connector.ws.register("/lol-gameflow/v1/session", event_types = ("CREATE", "UPDATE", "DELETE"))
 	async def gameFlow(connection, event):
 		data = event.data
+		
 		gameData = data['gameData']
 		queueData = gameData['queue']
 		mapData = data['map']
@@ -130,7 +138,7 @@ if __name__ == "__main__":
 			# Other modes
 			else:
 				for summoner in gameData["playerChampionSelections"]:
-					if summoner["summonerInternalName"] == internalName:
+					if summoner["summonerInternalName"] in (internalName, displayName):
 						champId = summoner["championId"]
 						skinId = champId * 1000 
 						if fetchConfig("useSkinSplash"):
@@ -166,6 +174,17 @@ if __name__ == "__main__":
 						state = discStrings["inGame"], \
 						start = time(), 
 						buttons = ([{"label": "View Splash Art", "url": splashLink(champId, skinId)}] if fetchConfig("showViewArtButton") else None))
+		
+		addLog({"gameData": {"playerChampionSelections": gameData["playerChampionSelections"]}, 
+		  "queueData": {"type": queueData["type"], 
+				  "category": queueData["category"],
+				  "description": queueData['description'],
+				  "gameMode": queueData['gameMode'],
+				  "mapId": queueData["mapId"],
+				  "maximumParticipantListSize": queueData["maximumParticipantListSize"]},
+		  "mapData": {"name": mapData['name'], 
+				"mapStringId": mapData["mapStringId"]}, 
+		  "phase": phase, "lobbyMem": lobbyMem})
 
 	@connector.ws.register("/lol-chat/v1/me", event_types = ("CREATE", "UPDATE", "DELETE"))
 	async def chatUpdate(connection, event):
@@ -190,7 +209,7 @@ if __name__ == "__main__":
 	isLeagueOpened = procPath("LeagueClient.exe")
 	choice = "NoStart"
 	if isLeagueOpened:
-		choice = buttonbox(f"DetailedLoLRPC might not work properly if opened after League of Legends. Continue?", "DetailedLoLRPC", ("Yes", "No"), cancel_choice = "No")
+		choice = buttonbox(f"DetailedLoLRPC might not work properly if opened after League of Legends. Continue?", "DetailedLoLRPC", ("Yes", "No"), cancel_choice = "No", icon=resourcePath("icon.ico"))
 		if choice == "No":
 			_exit(0)
 

@@ -3,10 +3,12 @@ from psutil import process_iter as pi
 from os import listdir, path as op, getenv, makedirs, _exit
 from requests import get
 from pickle import load, dump
+from json import load as loadj, dump as dumpj
 from easygui import enterbox
 
-VERSION = "v2.4"
+VERSION = "v2.5"
 GITHUBURL = "https://github.com/developers192/DetailedLoLRPC/releases/latest"
+ISSUESURL = "https://github.com/developers192/DetailedLoLRPC/issues/new"
 DEFAULTCONFIG = {
 	"useSkinSplash": True,
 	"showViewArtButton": False,
@@ -14,6 +16,7 @@ DEFAULTCONFIG = {
 	"riotPath": ""
 }
 CONFIGDIR = op.join(getenv("APPDATA"), "DetailedLoLRPC", "config.dlrpc")
+LOGDIR = op.join(getenv("APPDATA"), "DetailedLoLRPC", "sessionlog.json")
 CLIENTID = "1118062711687872593"
 
 def resourcePath(relative_path):
@@ -88,3 +91,20 @@ def resetConfig():
 	with open(CONFIGDIR, "wb") as f:
 		dump(DEFAULTCONFIG, f)
 	return
+
+def resetLog():
+	makedirs(op.dirname(LOGDIR), exist_ok = True)
+	with open(LOGDIR, "w") as f:
+		dumpj([], f)
+	return
+
+def addLog(data):
+	try:
+		with open(LOGDIR, "r") as f:
+			logs = loadj(f)
+	except FileNotFoundError:
+		resetLog()
+		logs = []
+	logs.append(data)
+	with open(LOGDIR, "w") as f:
+		dumpj(logs, f)
