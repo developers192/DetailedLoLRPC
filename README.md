@@ -77,6 +77,7 @@ You can right click the tray icon to toggle various settings:
 - "Show "View splash art" button": Display a button on Discord that allows viewing the current skin's splash.
 - "Idle status": Choose an idling status to show on Discord (If this doesn't update first try, you can try creating and leaving a lobby)
 - "Reset preferences": Reset all settings to their default values. You have to use this if you want to move your Riot Games folder to another directory.
+- "Report bug": Open the the page to report a bug and the folder containing the necessary logs.
 - "Exit": Exit DetailedLoLRPC (LoL's native RPC will not be re-enabled until the next time you start LoL using the Riot Client)
 
 If you change any settings while in the middle of a game, they will be applied the next time you start a game.
