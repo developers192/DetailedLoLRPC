@@ -3,9 +3,13 @@ def mapIdimg(mapid: int):
         11: "classic_sru",
         12: "aram",
         22: "tft",
-        30: "gamemodex"
+        30: "gamemodex",
+        21: "shared"
 	}
     return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/content/src/leagueclient/gamemodeassets/{conv[mapid]}/img/game-select-icon-active.png"
+
+def mapIcon(data):
+    return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/" + "/".join(data.split("/")[2:]).lower()
 
 def skinImg(champId, skinId):
     if skinId / 1000 == champId:
@@ -13,7 +17,7 @@ def skinImg(champId, skinId):
     return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-tiles/{champId}/{skinId}.jpg"
 
 def splashLink(champId, skinId):
-    return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/{champId}/{skinId}.jpg"
+    return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/uncentered/{champId}/{skinId}.jpg"
 
 def tftImg(compDir):
     name = compDir.split("/")[-1].lower()
@@ -37,6 +41,6 @@ def availabilityImg(a):
         "chat": "https://i.imgur.com/I2XxZ5y.png",
         "away": "https://i.imgur.com/X5YwSxs.png",
         "dnd": "https://i.imgur.com/5I4uDSL.png",
-        "leagueIcon": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/LoL_icon.svg/256px-LoL_icon.svg.png"
+        "leagueIcon": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/splashscreens/lol_icon.png"
     }
     return conv[a]

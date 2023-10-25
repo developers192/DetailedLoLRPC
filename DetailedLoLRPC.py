@@ -85,6 +85,7 @@ if __name__ == "__main__":
 		gameData = data['gameData']
 		queueData = gameData['queue']
 		mapData = data['map']
+		mapIconData = mapData["assets"]["game-select-icon-active"]
 		phase = data['phase']
 
 		lobbyMem = len(await (await connection.request('get', '/lol-lobby/v2/lobby/members')).json())
@@ -99,21 +100,21 @@ if __name__ == "__main__":
 		if phase == "Lobby":
 			if queueData["mapId"] == 0: return
 			RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
-					large_image = mapIdimg(queueData["mapId"]), \
+					large_image = mapIcon(mapIconData), \
 					large_text = mapData['name'], \
 					state = discStrings["lobby"], \
 					party_size = [lobbyMem, queueData["maximumParticipantListSize"]])
 			
 		elif phase == "Matchmaking":
 			RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
-					large_image = mapIdimg(queueData["mapId"]), \
+					large_image = mapIcon(mapIconData), \
 					large_text = mapData['name'], \
 					state = discStrings["inQueue"], \
 					start = time())
 			
 		elif phase == "ChampSelect":
 			RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
-					large_image = mapIdimg(queueData["mapId"]), \
+					large_image = mapIcon(mapIconData), \
 					large_text = mapData['name'], \
 					state = discStrings["champSelect"])
 			
@@ -130,7 +131,7 @@ if __name__ == "__main__":
 							buttons = ([{"label": "View Splash Art", "url": tftImg(compData["loadoutsIcon"])}] if fetchConfig("showViewArtButton") else None))
 				else:
 					RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
-							large_image = mapIdimg(queueData["mapId"]), \
+							large_image = mapIcon(mapIconData), \
 							large_text = mapData['name'], \
 							state = discStrings["inGame"], \
 							start = time())
@@ -183,7 +184,8 @@ if __name__ == "__main__":
 				  "mapId": queueData["mapId"],
 				  "maximumParticipantListSize": queueData["maximumParticipantListSize"]},
 		  "mapData": {"name": mapData['name'], 
-				"mapStringId": mapData["mapStringId"]}, 
+				"mapStringId": mapData["mapStringId"],
+				"game-select-icon-active": mapIconData}, 
 		  "phase": phase, "lobbyMem": lobbyMem})
 
 	@connector.ws.register("/lol-chat/v1/me", event_types = ("CREATE", "UPDATE", "DELETE"))
