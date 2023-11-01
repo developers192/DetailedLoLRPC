@@ -1,7 +1,7 @@
 from os import _exit, system, startfile, path as op
 from PIL import Image
 from pystray import Icon, Menu, MenuItem
-from utilities import editConfig, fetchConfig, resourcePath, resetConfig, ISSUESURL, LOGDIR
+from utilities import editConfig, fetchConfig, resourcePath, resetConfig, ISSUESURL, LOGDIR, VERSION
 
 img = Image.open(resourcePath("icon.ico"))
 
@@ -32,6 +32,8 @@ def rpbug(icon: Icon, query):
 
 icon = Icon("DetailedLoLRPC", img, "DetailedLoLRPC", 
             Menu(
+                MenuItem(f"DetailedLoLRPC {VERSION} - by Ria", None, enabled=False),
+                Menu.SEPARATOR,
                 MenuItem("Use Skin's splash and name", skinSplash, checked = lambda item: fetchConfig("useSkinSplash")),
                 MenuItem('Show "View splash art" button', viewSplash, checked = lambda item: fetchConfig("showViewArtButton")),
                 MenuItem("Idle status", Menu(

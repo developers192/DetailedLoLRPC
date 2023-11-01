@@ -6,7 +6,7 @@ from pickle import load, dump
 from json import load as loadj, dump as dumpj
 from easygui import enterbox
 
-VERSION = "v2.6"
+VERSION = "v2.7"
 GITHUBURL = "https://github.com/developers192/DetailedLoLRPC/releases/latest"
 ISSUESURL = "https://github.com/developers192/DetailedLoLRPC/issues/new"
 DEFAULTCONFIG = {

@@ -11,6 +11,7 @@ from easygui import buttonbox
 from multiprocessing import Process, freeze_support
 from subprocess import Popen, PIPE
 from nest_asyncio import apply
+from json import loads
 
 if __name__ == "__main__":
 
@@ -55,9 +56,9 @@ if __name__ == "__main__":
 		addLog({"internalName": internalName, "displayName": displayName, "summonerId": summonerId, "locale": locale})
 
 		async with request("GET", localeDiscordStrings(locale)) as resp:
-			discord_strings = await resp.json()
+			discord_strings = loads((await resp.text()).encode().decode('utf-8-sig'))
 		async with request("GET", localeChatStrings(locale)) as resp:
-			chat_strings = await resp.json()
+			chat_strings = loads((await resp.text()).encode().decode('utf-8-sig'))
 
 		discStrings = {
 			"bot": discord_strings["Disc_Pres_QueueType_BOT"],
@@ -81,12 +82,15 @@ if __name__ == "__main__":
 	@connector.ws.register("/lol-gameflow/v1/session", event_types = ("CREATE", "UPDATE", "DELETE"))
 	async def gameFlow(connection, event):
 		data = event.data
+		phase = data['phase']
+
+		if phase not in ("Lobby", "Matchmaking", "ChampSelect", "InProgress"): return
 		
 		gameData = data['gameData']
 		queueData = gameData['queue']
 		mapData = data['map']
 		mapIconData = mapData["assets"]["game-select-icon-active"]
-		phase = data['phase']
+		
 
 		lobbyMem = len(await (await connection.request('get', '/lol-lobby/v2/lobby/members')).json())
 
