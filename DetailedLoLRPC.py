@@ -208,8 +208,9 @@ if __name__ == "__main__":
 			elif option == 2:
 				RPC.update(state = discStrings[availability], 
 	       					large_image = profileIcon(data["icon"]), 
-						    large_text = f"{data['name']} - Lvl {data['lol']['level']}",
-							small_image = availabilityImg(availability),)
+						    large_text = f"{data['gameName']}#{data['gameTag']} | Lvl {data['lol']['level']}",
+							small_image = availabilityImg(availability),
+							small_text = data["statusMessage"] if data["statusMessage"] else None)
 
 	# Detect if game has started
 	isLeagueOpened = procPath("LeagueClient.exe")

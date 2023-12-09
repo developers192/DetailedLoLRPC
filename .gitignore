@@ -10,3 +10,7 @@ __pycache__/
 build/
 dist/
 Release/
+
+Lib/
+Scripts/
+pyvenv.cfg
