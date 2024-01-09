@@ -1,6 +1,6 @@
 <mark><b>As you might already know, the Vanguard anti-cheat is coming to League. It is unknown how this will affect DetailedLoLRPC, but I highly recommend you to stop using it until further notice.</b></mark>
 
-<mark><b>Vanguard will be implemented in late February or early March. Until then, you can continue using DLRPC with no issue, just remember to stop using it when the Vanguard update drops.</b></mark>
+<mark><b>Vanguard will be implemented in late February or early March. Until then, you can continue using DLRPC with no issues, just remember to stop using it when the Vanguard update drops.</b></mark>
 
 <a name="readme-top"></a>
 
