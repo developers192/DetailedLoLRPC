@@ -1,3 +1,5 @@
+==**As you might already know, the Vanguard anti-cheat is coming to League. It is unknown how this will affect DetailedLoLRPC, but I highly recommend you to stop using it until further notice.**==
+
 <a name="readme-top"></a>
 
 <div align="center">
