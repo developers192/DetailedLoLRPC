@@ -1,6 +1,4 @@
-<mark><b>As you may already know, the Vanguard anti-cheat is coming to League. It is unknown how this will affect DetailedLoLRPC, but I highly recommend you to stop using it until further notice.</b></mark>
-
-<mark><b>Vanguard will be implemented in late February or early March. Until then, you can continue using DLRPC with no issues, just remember to stop using it when the Vanguard update drops.</b></mark>
+<mark><b>Annoucement: DetailedLoLRPC has been tested on PBE and worked just fine with Vanguard.</b></mark>
 
 <a name="readme-top"></a>
 
