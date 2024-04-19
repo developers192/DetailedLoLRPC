@@ -4,9 +4,23 @@ from os import listdir, path as op, getenv, makedirs, _exit
 from requests import get
 from pickle import load, dump
 from json import load as loadj, dump as dumpj
-from easygui import enterbox
+import tkinter as tk
+from tkinter import messagebox, ttk
+from dotenv import load_dotenv
+from base64 import b64decode
 
-VERSION = "v2.8"
+def resourcePath(relative_path):
+	try:
+		base_path = sys._MEIPASS
+	except Exception:
+		base_path = op.abspath(".")
+
+	return op.join(base_path, relative_path)
+
+
+load_dotenv(resourcePath(".env"))
+
+VERSION = "v2.9"
 GITHUBURL = "https://github.com/developers192/DetailedLoLRPC/releases/latest"
 ISSUESURL = "https://github.com/developers192/DetailedLoLRPC/issues/new"
 DEFAULTCONFIG = {
@@ -17,15 +31,55 @@ DEFAULTCONFIG = {
 }
 CONFIGDIR = op.join(getenv("APPDATA"), "DetailedLoLRPC", "config.dlrpc")
 LOGDIR = op.join(getenv("APPDATA"), "DetailedLoLRPC", "sessionlog.json")
-CLIENTID = "1118062711687872593"
+CLIENTID = b64decode(getenv("CLIENTID")).decode("utf-8")
 
-def resourcePath(relative_path):
-	try:
-		base_path = sys._MEIPASS
-	except Exception:
-		base_path = op.abspath(".")
+def yesNoBox(msg):
+	root = tk.Tk()
+	root.withdraw()
+	root.iconbitmap(resourcePath("icon.ico"))
 
-	return op.join(base_path, relative_path)
+	result = messagebox.askyesno("DetailedLoLRPC", msg)
+	return result
+
+def inputBox(msg):
+	root = tk.Tk()
+	root.withdraw()
+		
+	dialog = tk.Toplevel(root)
+	dialog.title("DetailedLoLRPC")
+	dialog.geometry("360x150")
+	dialog.resizable(False, False)
+	dialog.iconbitmap(resourcePath("icon.ico"))
+
+	label = tk.Label(dialog, text= msg, wraplength=300)
+	label.pack(pady=10)
+
+	entry = tk.Entry(dialog, width=50)
+	entry.pack(pady=5)
+	
+	button_frame = tk.Frame(dialog)
+	button_frame.pack(pady=10)
+
+	def on_yes():
+		global result
+		result = "-1"
+		result = entry.get()
+		dialog.destroy()
+
+	yes_button = ttk.Button(button_frame, text="Confirm", style="Windows.TButton", command=on_yes)
+	yes_button.pack(side=tk.LEFT, padx=5)
+	
+	def on_no():
+		global result
+		result = None
+		dialog.destroy()
+	dialog.protocol("WM_DELETE_WINDOW", on_no)
+
+	no_button = ttk.Button(button_frame, text="Cancel", style="Windows.TButton", command=on_no)
+	no_button.pack(side=tk.LEFT, padx=5)
+
+	dialog.wait_window(dialog)
+	return result
 
 def procPath(name):
 	for proc in pi():
@@ -53,13 +107,14 @@ def getRiotPath():
 	if path:
 		path = op.dirname(op.dirname(path))
 	else:
-		path = enterbox(r'Riot Services process was not found. Please enter the path to the "Riot Games" folder below (E.g. C:\Riot Games)', "DetailedLoLRPC")
+		n = "\n"
+		path = inputBox(rf'Riot Services process was not found. Please enter the path to the "Riot Games" folder below{n}(E.g. C:\Riot Games)')
 		while True:
 			if path is None:
 				_exit(0)
 			if checkRiotClientPath(path):
 				break
-			path = enterbox(r'Invalid Path. Please enter the path to the "Riot Games" folder below (E.g. C:\Riot Games)', "DetailedLoLRPC")
+			path = inputBox(r'Invalid Path. Please enter the path to the "Riot Games" folder below (E.g. C:\Riot Games)')
 	return path
 
 def fetchConfig(entry):

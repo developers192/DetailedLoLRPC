@@ -1,5 +1,5 @@
 from lcu_driver import Connector
-from utilities import isOutdated, GITHUBURL, CLIENTID, fetchConfig, procPath, resetLog, addLog, resourcePath
+from utilities import isOutdated, GITHUBURL, CLIENTID, fetchConfig, procPath, resetLog, addLog, resourcePath, yesNoBox
 from cdngen import *
 from disabler import disableNativePresence
 from pypresence import Presence
@@ -7,11 +7,11 @@ from time import time, sleep
 from aiohttp import request
 from os import _exit, system, path as op
 from tray_icon import icon
-from easygui import buttonbox
 from multiprocessing import Process, freeze_support
 from subprocess import Popen, PIPE
 from nest_asyncio import apply
 from json import loads
+from asyncio import sleep as asyncSleep
 
 if __name__ == "__main__":
 
@@ -26,8 +26,8 @@ if __name__ == "__main__":
 	# Check for updates
 	outdated = isOutdated()
 	if outdated:
-		choice = buttonbox(f"A newer version of DetailedLoLRPC detected ({outdated}). Do you want to visit the download site?", "DetailedLoLRPC", ("Yes", "No"), cancel_choice = "No", icon=resourcePath("icon.ico"))
-		if choice == "Yes":
+		choice = yesNoBox(f"A newer version of DetailedLoLRPC detected ({outdated}). Do you want to visit the download site?")
+		if choice:
 			system(f"start \"\" {GITHUBURL}")
 			sleep(1)
 			_exit(0)
@@ -77,7 +77,9 @@ if __name__ == "__main__":
 
 	@connector.close
 	async def disconnect(_):
-		_exit(0)
+		await asyncSleep(1)
+		if not procPath("LeagueClient.exe"):
+			_exit(0)
 
 	@connector.ws.register("/lol-gameflow/v1/session", event_types = ("CREATE", "UPDATE", "DELETE"))
 	async def gameFlow(connection, event):
@@ -216,8 +218,8 @@ if __name__ == "__main__":
 	isLeagueOpened = procPath("LeagueClient.exe")
 	choice = "NoStart"
 	if isLeagueOpened:
-		choice = buttonbox(f"DetailedLoLRPC might not work properly if opened after League of Legends. Continue?", "DetailedLoLRPC", ("Yes", "No"), cancel_choice = "No", icon=resourcePath("icon.ico"))
-		if choice == "No":
+		choice = yesNoBox("DetailedLoLRPC might not work properly if opened after League of Legends. Continue?")
+		if not choice:
 			_exit(0)
 
 	# Tray Icon
