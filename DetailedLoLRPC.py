@@ -156,6 +156,12 @@ if __name__ == "__main__":
 				for champSkin in champSkins:
 					if champSkin["id"] == skinId:
 						skinName = champSkin["name"]
+						if champSkin["isBase"]:
+							tileLink = defaultTileLink(champId)
+						else:
+							tileLinkraw = champSkin["tilePath"]
+							tileLink = assetsLink(tileLinkraw)
+						splashLink = assetsLink(champSkin["uncenteredSplashPath"])
 						break
 
 					_ok = False
@@ -163,6 +169,12 @@ if __name__ == "__main__":
 					for skinTier in champSkin["questSkinInfo"]["tiers"]:
 						if skinTier["id"] == skinId:
 							skinName = skinTier["name"]
+							if skinTier["isBase"]:
+								tileLink = defaultTileLink(champId)
+							else:
+								tileLinkraw = skinTier["tilePath"]
+								tileLink = assetsLink(tileLinkraw)
+							splashLink = assetsLink(skinTier["uncenteredSplashPath"])
 							_ok = True
 							break
 					if _ok: break
@@ -171,16 +183,22 @@ if __name__ == "__main__":
 						if chroma["id"] == skinId:
 							skinName = champSkin["name"]
 							skinId = champSkin["id"]
+							if champSkin["isBase"]:
+								tileLink = defaultTileLink(champId)
+							else:
+								tileLinkraw = champSkin["tilePath"]
+								tileLink = assetsLink(tileLinkraw)
+							splashLink = assetsLink(champSkin["uncenteredSplashPath"])
 							_ok = True
 							break
 					if _ok: break
 				
 				RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
-						large_image = skinImg(champId, skinId), \
+						large_image = tileLink, \
 						large_text = skinName, \
 						state = discStrings["inGame"], \
 						start = time(), 
-						buttons = ([{"label": "View Splash Art", "url": splashLink(champId, skinId)}] if fetchConfig("showViewArtButton") else None))
+						buttons = ([{"label": "View Splash Art", "url": splashLink}] if fetchConfig("showViewArtButton") else None))
 		
 		addLog({"gameData": {"playerChampionSelections": gameData["playerChampionSelections"]}, 
 		  "queueData": {"type": queueData["type"], 

@@ -20,7 +20,7 @@ def resourcePath(relative_path):
 
 load_dotenv(resourcePath(".env"))
 
-VERSION = "v2.9"
+VERSION = "v3.0"
 GITHUBURL = "https://github.com/developers192/DetailedLoLRPC/releases/latest"
 ISSUESURL = "https://github.com/developers192/DetailedLoLRPC/issues/new"
 DEFAULTCONFIG = {

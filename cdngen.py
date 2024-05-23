@@ -11,13 +11,12 @@ def mapIdimg(mapid: int):
 def mapIcon(data):
     return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/" + "/".join(data.split("/")[2:]).lower()
 
-def skinImg(champId, skinId):
-    if skinId / 1000 == champId:
-        return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png"
-    return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-tiles/{champId}/{skinId}.jpg"
+def defaultTileLink(champId):
+    return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png"
 
-def splashLink(champId, skinId):
-    return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/uncentered/{champId}/{skinId}.jpg"
+def assetsLink(link):
+    links = link.lower().split("/")[4:]
+    return f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/{'/'.join(links)}"
 
 def tftImg(compDir):
     name = compDir.split("/")[-1].lower()
