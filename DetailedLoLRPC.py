@@ -1,5 +1,5 @@
 from lcu_driver import Connector
-from utilities import isOutdated, GITHUBURL, CLIENTID, fetchConfig, procPath, resetLog, addLog, resourcePath, yesNoBox
+from utilities import isOutdated, GITHUBURL, CLIENTID, fetchConfig, procPath, resetLog, addLog, yesNoBox
 from cdngen import *
 from disabler import disableNativePresence
 from pypresence import Presence
@@ -12,6 +12,7 @@ from subprocess import Popen, PIPE
 from nest_asyncio import apply
 from json import loads
 from asyncio import sleep as asyncSleep
+from modes import updateInProgressRPC
 
 if __name__ == "__main__":
 
@@ -51,8 +52,9 @@ if __name__ == "__main__":
 		summonerId = summoner['summonerId']
 		displayName = summoner['displayName']
 		region = await connection.request('get', '/riotclient/region-locale')
+		global locale
 		locale = (await region.json())['locale'].lower()
-
+		
 		addLog({"internalName": internalName, "displayName": displayName, "summonerId": summonerId, "locale": locale})
 
 		async with request("GET", localeDiscordStrings(locale)) as resp:
@@ -77,7 +79,7 @@ if __name__ == "__main__":
 
 	@connector.close
 	async def disconnect(_):
-		await asyncSleep(1)
+		await asyncSleep(4)
 		if not procPath("LeagueClient.exe"):
 			_exit(0)
 
@@ -125,80 +127,7 @@ if __name__ == "__main__":
 					state = discStrings["champSelect"])
 			
 		elif phase == "InProgress":
-			# TFT handling
-			if mapData["mapStringId"] == "TFT":
-				if fetchConfig("useSkinSplash"):
-					compData = (await (await connection.request('get', '/lol-cosmetics/v1/inventories/tft/companions')).json())["selectedLoadoutItem"]
-					RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
-							large_image = tftImg(compData["loadoutsIcon"]), \
-							large_text = compData['name'], \
-							state = discStrings["inGame"], \
-							start = time(), \
-							buttons = ([{"label": "View Splash Art", "url": tftImg(compData["loadoutsIcon"])}] if fetchConfig("showViewArtButton") else None))
-				else:
-					RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
-							large_image = mapIcon(mapIconData), \
-							large_text = mapData['name'], \
-							state = discStrings["inGame"], \
-							start = time())
-				
-			# Other modes
-			else:
-				for summoner in gameData["playerChampionSelections"]:
-					if summoner["summonerInternalName"] in (internalName, displayName):
-						champId = summoner["championId"]
-						skinId = champId * 1000 
-						if fetchConfig("useSkinSplash"):
-							skinId += summoner["selectedSkinIndex"]
-						break
-
-				champSkins = await (await connection.request('get', f'/lol-champions/v1/inventories/{summonerId}/champions/{champId}/skins')).json()
-				for champSkin in champSkins:
-					if champSkin["id"] == skinId:
-						skinName = champSkin["name"]
-						if champSkin["isBase"]:
-							tileLink = defaultTileLink(champId)
-						else:
-							tileLinkraw = champSkin["tilePath"]
-							tileLink = assetsLink(tileLinkraw)
-						splashLink = assetsLink(champSkin["uncenteredSplashPath"])
-						break
-
-					_ok = False
-				
-					for skinTier in champSkin["questSkinInfo"]["tiers"]:
-						if skinTier["id"] == skinId:
-							skinName = skinTier["name"]
-							if skinTier["isBase"]:
-								tileLink = defaultTileLink(champId)
-							else:
-								tileLinkraw = skinTier["tilePath"]
-								tileLink = assetsLink(tileLinkraw)
-							splashLink = assetsLink(skinTier["uncenteredSplashPath"])
-							_ok = True
-							break
-					if _ok: break
-
-					for chroma in champSkin["chromas"]:
-						if chroma["id"] == skinId:
-							skinName = champSkin["name"]
-							skinId = champSkin["id"]
-							if champSkin["isBase"]:
-								tileLink = defaultTileLink(champId)
-							else:
-								tileLinkraw = champSkin["tilePath"]
-								tileLink = assetsLink(tileLinkraw)
-							splashLink = assetsLink(champSkin["uncenteredSplashPath"])
-							_ok = True
-							break
-					if _ok: break
-				
-				RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
-						large_image = tileLink, \
-						large_text = skinName, \
-						state = discStrings["inGame"], \
-						start = time(), 
-						buttons = ([{"label": "View Splash Art", "url": splashLink}] if fetchConfig("showViewArtButton") else None))
+			await updateInProgressRPC(locale, mapData, mapIconData, queueData, gameData, internalName, displayName, connection, summonerId, discStrings, RPC)
 		
 		addLog({"gameData": {"playerChampionSelections": gameData["playerChampionSelections"]}, 
 		  "queueData": {"type": queueData["type"], 
@@ -257,3 +186,4 @@ if __name__ == "__main__":
 
 	# Start the LCU API
 	connector.start()
+	

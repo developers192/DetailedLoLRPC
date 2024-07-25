@@ -1,5 +1,3 @@
-<mark><b>Annoucement: DetailedLoLRPC has been tested on PBE and worked just fine with Vanguard.</b></mark>
-
 <a name="readme-top"></a>
 
 <div align="center">
@@ -88,12 +86,14 @@ If you change any settings while in the middle of a game, they will be applied t
 ## Resource Usage
 CPU usage is ~0%. Memory usage is ~50MB.
 
-When first running, CPU usage could spike up to 25% for a few seconds 
-
 <!-- To do -->
 ## To do
 
 - [ ] Join lobby button on Discord
+
+## Will I get banned for using this?
+
+In theory, no, because DetailedLoLRPC only uses the API provided by the Client itself. Although it does tamper with the `plugin-manifest.json` file to disable the native RPC, it is [fine](https://www.reddit.com/r/leagueoflegends/comments/awedjv/there_is_a_way_to_make_the_client/)). I use this all the time. Regardless, although unlikely, it may change at any time.
 
 <!-- LICENSE -->
 ## License
@@ -101,7 +101,6 @@ When first running, CPU usage could spike up to 25% for a few seconds
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Disclaimer
-- I will not hold responsibility for any bans caused by DetailedLoLRPC. (In theory it won't happen because DetailedLoLRPC only uses the API provided by the Client itself. Although it does tamper with the `plugin-manifest.json` file to disable the native RPC, I think it's [fine](https://www.reddit.com/r/leagueoflegends/comments/awedjv/there_is_a_way_to_make_the_client/))
-- DetailedLoLRPC is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+DetailedLoLRPC is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

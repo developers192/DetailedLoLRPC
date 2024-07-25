@@ -43,3 +43,9 @@ def availabilityImg(a):
         "leagueIcon": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/splashscreens/lol_icon.png"
     }
     return conv[a]
+
+## MODE SPECIFIC
+def localeStrawberryStrings(locale):
+    if locale == "en_us":
+        locale = "default"
+    return f"https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-strawberry-hub/global/{locale}/trans.json"
