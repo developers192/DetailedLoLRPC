@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
 	@connector.close
 	async def disconnect(_):
-		await asyncSleep(4)
+		await asyncSleep(10)
 		if not procPath("LeagueClient.exe"):
 			_exit(0)
 
