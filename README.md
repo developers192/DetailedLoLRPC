@@ -93,7 +93,7 @@ CPU usage is ~0%. Memory usage is ~50MB.
 
 ## Will I get banned for using this?
 
-In theory, no, because DetailedLoLRPC only uses the API provided by the Client itself. Although it does tamper with the `plugin-manifest.json` file to disable the native RPC, it is [fine](https://www.reddit.com/r/leagueoflegends/comments/awedjv/there_is_a_way_to_make_the_client/)). I use this all the time. Regardless, although unlikely, it may change at any time.
+In theory, no, because DetailedLoLRPC only uses the API provided by the Client itself. Although it does tamper with the `plugin-manifest.json` file to disable the native RPC, it is [fine](https://www.reddit.com/r/leagueoflegends/comments/awedjv/there_is_a_way_to_make_the_client/). I use this all the time. Regardless, although unlikely, it may change at any time.
 
 <!-- LICENSE -->
 ## License
