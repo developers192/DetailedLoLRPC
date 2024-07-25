@@ -95,8 +95,9 @@ if __name__ == "__main__":
 		mapData = data['map']
 		mapIconData = mapData["assets"]["game-select-icon-active"]
 		
-
-		lobbyMem = len(await (await connection.request('get', '/lol-lobby/v2/lobby/members')).json())
+		lobbyData = (await connection.request('get', '/lol-lobby/v2/lobby/members'))
+		if lobbyData.status == 404: return
+		lobbyMem = len(await lobbyData.json())
 
 		if queueData["type"] == "BOT":
 			queueData['description'] = discStrings["bot"] + " " + queueData['description']
