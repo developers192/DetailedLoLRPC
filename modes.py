@@ -56,16 +56,6 @@ async def updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gam
         champSkins = await (await connection.request('get', f'/lol-champions/v1/inventories/{summonerId}/champions/{champId}/skins')).json()
 
         for champSkin in champSkins:
-            if champSkin["id"] == skinId:
-                skinName = champSkin["name"]
-                animatedSplashLink = champSkin["collectionSplashVideoPath"]
-                if champSkin["isBase"]:
-                    tileLink = defaultTileLink(champId)
-                else:
-                    tileLinkraw = champSkin["tilePath"]
-                    tileLink = assetsLink(tileLinkraw)
-                splashLink = assetsLink(champSkin["uncenteredSplashPath"])
-                break
 
             _ok = False
         
@@ -82,6 +72,17 @@ async def updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gam
                     _ok = True
                     break
             if _ok: break
+
+            if champSkin["id"] == skinId:
+                skinName = champSkin["name"]
+                animatedSplashLink = champSkin["collectionSplashVideoPath"]
+                if champSkin["isBase"]:
+                    tileLink = defaultTileLink(champId)
+                else:
+                    tileLinkraw = champSkin["tilePath"]
+                    tileLink = assetsLink(tileLinkraw)
+                splashLink = assetsLink(champSkin["uncenteredSplashPath"])
+                break
 
             for chroma in champSkin["chromas"]:
                 if chroma["id"] == skinId:
