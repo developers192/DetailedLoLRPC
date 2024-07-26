@@ -3,7 +3,6 @@
 *.spec
 *.bat
 *.txt
-*.json
 
 .vscode/
 __pycache__/
@@ -14,3 +13,4 @@ Release/
 Lib/
 Scripts/
 pyvenv.cfg
+test.json
