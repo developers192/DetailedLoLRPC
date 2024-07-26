@@ -21,8 +21,10 @@ def resourcePath(relative_path):
 load_dotenv(resourcePath(".env"))
 
 VERSION = "v3.1.2"
-GITHUBURL = "https://github.com/developers192/DetailedLoLRPC/releases/latest"
-ISSUESURL = "https://github.com/developers192/DetailedLoLRPC/issues/new"
+REPOURL = "https://github.com/developers192/DetailedLoLRPC/"
+GITHUBURL = REPOURL + "/releases/latest"
+ISSUESURL = REPOURL + "/issues/new"
+ANIMATEDSPLASHESURL = "https://raw.githubusercontent.com/developers192/DetailedLoLRPC/master/animatedSplashes/"
 DEFAULTCONFIG = {
 	"useSkinSplash": True,
 	"showViewArtButton": False,

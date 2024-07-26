@@ -1,5 +1,5 @@
 from lcu_driver import Connector
-from utilities import isOutdated, GITHUBURL, CLIENTID, fetchConfig, procPath, resetLog, addLog, yesNoBox
+from utilities import isOutdated, GITHUBURL, CLIENTID, fetchConfig, procPath, resetLog, addLog, yesNoBox, ANIMATEDSPLASHESURL
 from cdngen import *
 from disabler import disableNativePresence
 from pypresence import Presence
@@ -42,7 +42,7 @@ if __name__ == "__main__":
 	@connector.ready
 	async def connect(connection):
 		print("Inited")
-		global internalName, summonerId, discStrings, displayName
+		global internalName, summonerId, discStrings, displayName, animatedSplashIds
 		while True:
 			summoner = await connection.request('get', '/lol-summoner/v1/current-summoner')
 			if not summoner.status == 404:
@@ -78,6 +78,10 @@ if __name__ == "__main__":
 			"dnd": chat_strings["availability_dnd"]
 		}
 		print("Loaded Discord Strings")
+
+		async with request("GET", ANIMATEDSPLASHESURL + "/skinList.json") as resp:
+			animatedSplashIds = loads((await resp.text()).encode().decode('utf-8-sig'))
+		print("Loaded Animated Splash IDs")
 
 	@connector.close
 	async def disconnect(_):
@@ -132,7 +136,7 @@ if __name__ == "__main__":
 					state = discStrings["champSelect"])
 			
 		elif phase == "InProgress":
-			await updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gameData, internalName, displayName, connection, summonerId, discStrings, RPC)
+			await updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gameData, internalName, displayName, connection, summonerId, discStrings, animatedSplashIds, RPC)
 		
 		addLog({"gameData": {"playerChampionSelections": gameData["playerChampionSelections"]}, 
 		  "queueData": {"type": queueData["type"], 

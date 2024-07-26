@@ -1,8 +1,8 @@
 from utilities import fetchConfig
-from cdngen import assetsLink, defaultTileLink, tftImg, mapIcon, localeStrawberryStrings
+from cdngen import assetsLink, defaultTileLink, tftImg, mapIcon, animatedSplashUrl
 from time import time
 
-async def updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gameData, internalName, displayName, connection, summonerId, discStrings, RPC):
+async def updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gameData, internalName, displayName, connection, summonerId, discStrings, animatedSplashIds, RPC):
     # TFT
     if mapData["mapStringId"] == "TFT":
         if fetchConfig("useSkinSplash"):
@@ -58,7 +58,7 @@ async def updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gam
         for champSkin in champSkins:
             if champSkin["id"] == skinId:
                 skinName = champSkin["name"]
-                animatedSplashLink = champSkin["splashVideoPath"]
+                animatedSplashLink = champSkin["collectionSplashVideoPath"]
                 if champSkin["isBase"]:
                     tileLink = defaultTileLink(champId)
                 else:
@@ -72,7 +72,7 @@ async def updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gam
             for skinTier in champSkin["questSkinInfo"]["tiers"]:
                 if skinTier["id"] == skinId:
                     skinName = skinTier["name"]
-                    animatedSplashLink = skinTier["splashVideoPath"]
+                    animatedSplashLink = skinTier["collectionSplashVideoPath"]
                     if skinTier["isBase"]:
                         tileLink = defaultTileLink(champId)
                     else:
@@ -87,7 +87,7 @@ async def updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gam
                 if chroma["id"] == skinId:
                     skinName = champSkin["name"]
                     skinId = champSkin["id"]
-                    animatedSplashLink = champSkin["splashVideoPath"]
+                    animatedSplashLink = champSkin["collectionSplashVideoPath"]
                     if champSkin["isBase"]:
                         tileLink = defaultTileLink(champId)
                     else:
@@ -97,9 +97,13 @@ async def updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gam
                     _ok = True
                     break
             if _ok: break
+
+        if animatedSplashLink and skinId in animatedSplashIds and fetchConfig("animatedSplash"):
+            tileLink = animatedSplashUrl(skinId)
+            splashLink = assetsLink(animatedSplashLink)
         
         RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
-                large_image = animatedSplashLink if animatedSplashLink and fetchConfig("animatedSplash") and fetchConfig("useSkinSplash") else tileLink, \
+                large_image = tileLink, \
                 large_text = skinName, \
                 state = discStrings["inGame"], \
                 start = time(), 

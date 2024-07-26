@@ -44,8 +44,6 @@ def availabilityImg(a):
     }
     return conv[a]
 
-## MODE SPECIFIC
-def localeStrawberryStrings(locale):
-    if locale == "en_us":
-        locale = "default"
-    return f"https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-strawberry-hub/global/{locale}/trans.json"
+from utilities import ANIMATEDSPLASHESURL
+def animatedSplashUrl(skinId):
+    return f"{ANIMATEDSPLASHESURL}/{skinId}.gif"
