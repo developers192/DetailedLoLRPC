@@ -101,6 +101,6 @@ In theory, no, because DetailedLoLRPC only uses the API provided by the Client i
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Disclaimer
-DetailedLoLRPC is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+DetailedLoLRPC was created under Riot Games' ["Legal Jibber Jabber"](https://www.riotgames.com/en/legal) policy using assets owned by Riot Games. This project is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

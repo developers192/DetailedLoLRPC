@@ -1,10 +1,8 @@
 from utilities import fetchConfig
 from cdngen import assetsLink, defaultTileLink, tftImg, mapIcon, localeStrawberryStrings
 from time import time
-from aiohttp import request
-from json import loads
 
-async def updateInProgressRPC(locale, mapData, mapIconData, queueData, gameData, internalName, displayName, connection, summonerId, discStrings, RPC):
+async def updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gameData, internalName, displayName, connection, summonerId, discStrings, RPC):
     # TFT
     if mapData["mapStringId"] == "TFT":
         if fetchConfig("useSkinSplash"):
@@ -25,6 +23,7 @@ async def updateInProgressRPC(locale, mapData, mapIconData, queueData, gameData,
     # Swarm
     elif mapData["id"] == 33:
 
+        # Swarm 2024 champs
         champIdNames = {
             3147: 92,
             3151: 222,
@@ -37,10 +36,7 @@ async def updateInProgressRPC(locale, mapData, mapIconData, queueData, gameData,
             3947: 498
         }
 
-        for summoner in gameData["playerChampionSelections"]:
-            if summoner["summonerInternalName"] in (internalName, displayName):
-                champId = summoner["championId"]
-                break
+        champId = currentChamp[0]
 
         tileLink = defaultTileLink(champId)
         skinName = (await (await connection.request('get', f'/lol-champions/v1/inventories/{summonerId}/champions/{champIdNames[champId]}')).json())["name"]
@@ -53,19 +49,16 @@ async def updateInProgressRPC(locale, mapData, mapIconData, queueData, gameData,
 	
     # Others
     else:
-        for summoner in gameData["playerChampionSelections"]:
-            if summoner["summonerInternalName"] in (internalName, displayName):
-                champId = summoner["championId"]
-                skinId = champId * 1000 
-                if fetchConfig("useSkinSplash"):
-                    skinId += summoner["selectedSkinIndex"]
-                break
+
+        champId = currentChamp[0]
+        skinId = currentChamp[1] if fetchConfig("useSkinSplash") else champId * 1000
 
         champSkins = await (await connection.request('get', f'/lol-champions/v1/inventories/{summonerId}/champions/{champId}/skins')).json()
 
         for champSkin in champSkins:
             if champSkin["id"] == skinId:
                 skinName = champSkin["name"]
+                animatedSplashLink = champSkin["splashVideoPath"]
                 if champSkin["isBase"]:
                     tileLink = defaultTileLink(champId)
                 else:
@@ -79,6 +72,7 @@ async def updateInProgressRPC(locale, mapData, mapIconData, queueData, gameData,
             for skinTier in champSkin["questSkinInfo"]["tiers"]:
                 if skinTier["id"] == skinId:
                     skinName = skinTier["name"]
+                    animatedSplashLink = skinTier["splashVideoPath"]
                     if skinTier["isBase"]:
                         tileLink = defaultTileLink(champId)
                     else:
@@ -93,6 +87,7 @@ async def updateInProgressRPC(locale, mapData, mapIconData, queueData, gameData,
                 if chroma["id"] == skinId:
                     skinName = champSkin["name"]
                     skinId = champSkin["id"]
+                    animatedSplashLink = champSkin["splashVideoPath"]
                     if champSkin["isBase"]:
                         tileLink = defaultTileLink(champId)
                     else:
@@ -104,7 +99,7 @@ async def updateInProgressRPC(locale, mapData, mapIconData, queueData, gameData,
             if _ok: break
         
         RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
-                large_image = tileLink, \
+                large_image = animatedSplashLink if animatedSplashLink and fetchConfig("animatedSplash") and fetchConfig("useSkinSplash") else tileLink, \
                 large_text = skinName, \
                 state = discStrings["inGame"], \
                 start = time(), 

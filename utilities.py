@@ -26,6 +26,7 @@ ISSUESURL = "https://github.com/developers192/DetailedLoLRPC/issues/new"
 DEFAULTCONFIG = {
 	"useSkinSplash": True,
 	"showViewArtButton": False,
+	"animatedSplash": True,
 	"idleStatus": 0,
 	"riotPath": ""
 }
@@ -36,6 +37,7 @@ CLIENTID = b64decode(getenv("CLIENTID")).decode("utf-8")
 def yesNoBox(msg):
 	root = tk.Tk()
 	root.withdraw()
+	root.attributes('-topmost', True)
 	root.iconbitmap(resourcePath("icon.ico"))
 
 	result = messagebox.askyesno("DetailedLoLRPC", msg)
@@ -44,12 +46,14 @@ def yesNoBox(msg):
 def inputBox(msg):
 	root = tk.Tk()
 	root.withdraw()
+	root.attributes('-topmost', True)
 		
 	dialog = tk.Toplevel(root)
 	dialog.title("DetailedLoLRPC")
 	dialog.geometry("360x150")
 	dialog.resizable(False, False)
 	dialog.iconbitmap(resourcePath("icon.ico"))
+	dialog.attributes('-topmost', True)
 
 	label = tk.Label(dialog, text= msg, wraplength=300)
 	label.pack(pady=10)

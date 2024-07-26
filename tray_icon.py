@@ -5,19 +5,19 @@ from utilities import editConfig, fetchConfig, resourcePath, resetConfig, ISSUES
 
 img = Image.open(resourcePath("icon.ico"))
 
-def exitp(icon: Icon, query):
+def exitp(icon, query):
     icon.stop()
     _exit(0)
 
-def skinSplash(icon: Icon, query):
+def skinSplash(icon, query):
     state = fetchConfig("useSkinSplash")
     editConfig("useSkinSplash", not state)
 
-def viewSplash(icon: Icon, query):
+def viewSplash(icon, query):
     state = fetchConfig("showViewArtButton")
     editConfig("showViewArtButton", not state)
 
-def idleStatus(icon: Icon, query):
+def idleStatus(icon, query):
     if str(query) == "Disabled":
         val = 0
     elif str(query) == "Simple":
@@ -26,7 +26,11 @@ def idleStatus(icon: Icon, query):
         val = 2
     editConfig("idleStatus", val)
 
-def rpbug(icon: Icon, query):
+def animatedSplash(icon, query):
+    state = fetchConfig("animatedSplash")
+    editConfig("animatedSplash", not state)
+
+def rpbug(icon, query):
     system(f"start \"\" {ISSUESURL}")
     startfile(op.dirname(LOGDIR))
 
@@ -35,6 +39,7 @@ icon = Icon("DetailedLoLRPC", img, "DetailedLoLRPC",
                 MenuItem(f"DetailedLoLRPC {VERSION} - by Ria", None, enabled=False),
                 Menu.SEPARATOR,
                 MenuItem("Use Skin's splash and name", skinSplash, checked = lambda item: fetchConfig("useSkinSplash")),
+                MenuItem("Use animated splash if available", animatedSplash, checked = lambda item: fetchConfig("animatedSplash")),
                 MenuItem('Show "View splash art" button', viewSplash, checked = lambda item: fetchConfig("showViewArtButton")),
                 MenuItem("Idle status", Menu(
                     MenuItem("Disabled", idleStatus, checked = lambda item: fetchConfig("idleStatus") == 0),

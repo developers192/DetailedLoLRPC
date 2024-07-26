@@ -24,6 +24,8 @@ if __name__ == "__main__":
 
 	fetchConfig("riotPath")
 
+	currentChamp = (1, 0)
+
 	# Check for updates
 	outdated = isOutdated()
 	if outdated:
@@ -93,10 +95,12 @@ if __name__ == "__main__":
 		gameData = data['gameData']
 		queueData = gameData['queue']
 		mapData = data['map']
-		mapIconData = mapData["assets"]["game-select-icon-active"]
+		mapIconData = mapData["assets"]
+		if not mapIconData: return
+		mapIconData = mapIconData["game-select-icon-active"]
 		
 		lobbyData = (await connection.request('get', '/lol-lobby/v2/lobby/members'))
-		if lobbyData.status == 404: return
+		if lobbyData.status == 404 and phase != "InProgress": return
 		lobbyMem = len(await lobbyData.json())
 
 		if queueData["type"] == "BOT":
@@ -128,7 +132,7 @@ if __name__ == "__main__":
 					state = discStrings["champSelect"])
 			
 		elif phase == "InProgress":
-			await updateInProgressRPC(locale, mapData, mapIconData, queueData, gameData, internalName, displayName, connection, summonerId, discStrings, RPC)
+			await updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gameData, internalName, displayName, connection, summonerId, discStrings, RPC)
 		
 		addLog({"gameData": {"playerChampionSelections": gameData["playerChampionSelections"]}, 
 		  "queueData": {"type": queueData["type"], 
@@ -161,6 +165,14 @@ if __name__ == "__main__":
 						    large_text = f"{data['gameName']}#{data['gameTag']} | Lvl {data['lol']['level']}",
 							small_image = availabilityImg(availability),
 							small_text = data["statusMessage"] if data["statusMessage"] else None)
+	
+	@connector.ws.register("/lol-champ-select/v1/session", event_types = ("CREATE", "UPDATE"))
+	async def champSelect(connection, event):
+		data = event.data
+		global currentChamp
+		for player in data["myTeam"]:
+			if player["summonerId"] == summonerId:
+				currentChamp = (player["championId"], player["selectedSkinId"])
 
 	# Detect if game has started
 	isLeagueOpened = procPath("LeagueClient.exe")
