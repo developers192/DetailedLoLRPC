@@ -91,7 +91,7 @@ If you change any settings while in the middle of a game, they will be applied t
 
 <!-- Resource Usage -->
 ## Resource Usage
-CPU usage is ~0%. Memory usage is ~50MB.
+CPU usage is ~3%. Memory usage is ~50MB.
 
 <!-- To do -->
 ## To do
