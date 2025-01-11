@@ -76,7 +76,13 @@ You can right click the tray icon to toggle various settings:
 - "Use skin's splash and name": Display the current skin's splash and name on Discord. If disabled, default skin and champion name will be used instead.
 - "Use animated splash if available": If a skin has an animated splash art (typically Ultimate or $500 skins), use it instead of the static image.
 - "Show "View splash art" button": Display a button on Discord that allows viewing the current skin's splash.
+- "Show party info": Show party member count on Discord
+
+- "Ingame stats": Choose which ingame stats to show (KDA, CS, Level)
+- "Show ranks": Choose which mode to show your rank (Solo, Flex, TFT, Double up)
+- "Ranked stats": Choose which ranked stats to show (LP, Wins, Losses)
 - "Idle status": Choose an idling status to show on Discord (If this doesn't update first try, you can try creating and leaving a lobby)
+
 - "Reset preferences": Reset all settings to their default values. You have to use this if you want to move your Riot Games folder to another directory.
 - "Report bug": Open the the page to report a bug and the folder containing the necessary logs.
 - "Exit": Exit DetailedLoLRPC (LoL's native RPC will not be re-enabled until the next time you start LoL using the Riot Client)
