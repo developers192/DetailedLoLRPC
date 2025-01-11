@@ -1,7 +1,7 @@
 from json import load, dump
 from time import time
 from os import path as op
-from utilities import procPath, fetchConfig
+from src.utilities import procPath, fetchConfig
 
 def disableNativePresence():
 	path = op.join(fetchConfig("riotPath"), "League of Legends", "Plugins", "plugin-manifest.json")
@@ -16,8 +16,11 @@ def disableNativePresence():
 	t = time()
 	# Constantly disabling Rich Presence
 	while True:
-		with open(path, "w") as f:
-			dump(content, f)
+		try:
+			with open(path, "w") as f:
+				dump(content, f)
+		except PermissionError:
+			pass
 			
 		# Stops when the client opened (60 seconds timeout)
 		if procPath("LeagueClient.exe") or time() - t > 60:

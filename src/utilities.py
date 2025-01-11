@@ -20,21 +20,28 @@ def resourcePath(relative_path):
 
 load_dotenv(resourcePath(".env"))
 
-VERSION = "v3.2.0"
+VERSION = "v4.0.0"
 REPOURL = "https://github.com/developers192/DetailedLoLRPC/"
 GITHUBURL = REPOURL + "/releases/latest"
 ISSUESURL = REPOURL + "/issues/new"
-ANIMATEDSPLASHESURL = "https://raw.githubusercontent.com/developers192/DetailedLoLRPC/master/animatedSplashes/"
+ANIMATEDSPLASHESURL = "https://raw.githubusercontent.com/developers192/DetailedLoLRPC/refs/heads/master/animatedSplashes/"
+ANIMATEDSPLASHESIDS = [99007, 360030, 147001, 147002, 147003, 103086, 21016, 77003, 37006, 81005]
 DEFAULTCONFIG = {
 	"useSkinSplash": True,
 	"showViewArtButton": False,
 	"animatedSplash": True,
+	"showPartyInfo": True,
+	"stats": {"kda": True, "cs": True, "level": True},
+	"rankedStats": {"lp": True, "w": True, "l": True},
+	"showRanks": {"RANKED_SOLO_5x5": True, "RANKED_FLEX_SR": True, "RANKED_TFT": True, "RANKED_TFT_DOUBLE_UP": True},
 	"idleStatus": 0,
 	"riotPath": ""
 }
 CONFIGDIR = op.join(getenv("APPDATA"), "DetailedLoLRPC", "config.dlrpc")
 LOGDIR = op.join(getenv("APPDATA"), "DetailedLoLRPC", "sessionlog.json")
 CLIENTID = b64decode(getenv("CLIENTID")).decode("utf-8")
+
+
 
 def yesNoBox(msg):
 	root = tk.Tk()
@@ -124,27 +131,34 @@ def getRiotPath():
 	return path
 
 def fetchConfig(entry):
-	makedirs(op.dirname(CONFIGDIR), exist_ok = True)
-	try:
-		with open(CONFIGDIR, "rb") as f:
-			data = load(f)
-	except FileNotFoundError:
-		DEFAULTCONFIG["riotPath"] = getRiotPath()
-		with open(CONFIGDIR, "wb") as f:
-			dump(DEFAULTCONFIG, f)
-		data = DEFAULTCONFIG
-	try: data = data[entry]
+	# makedirs(op.dirname(CONFIGDIR), exist_ok = True)
+	# try:
+	# 	with open(CONFIGDIR, "rb") as f:
+	# 		data = load(f)
+	# except FileNotFoundError:
+	# 	DEFAULTCONFIG["riotPath"] = getRiotPath()
+	# 	with open(CONFIGDIR, "wb") as f:
+	# 		dump(DEFAULTCONFIG, f)
+	# 	data = DEFAULTCONFIG
+	try: data = CONFIG[entry]
 	except KeyError: 
 		editConfig(entry, DEFAULTCONFIG[entry])
 		data = DEFAULTCONFIG[entry]
 	return data
 
 def editConfig(entry, value):
-	with open(CONFIGDIR, "rb") as f:
-		data = load(f)
+	makedirs(op.dirname(CONFIGDIR), exist_ok = True)
+	try:
+		with open(CONFIGDIR, "rb") as f:
+			data = load(f)
+	except FileNotFoundError:
+		DEFAULTCONFIG["riotPath"] = getRiotPath()
+		data = DEFAULTCONFIG
 	data[entry] = value
 	with open(CONFIGDIR, "wb") as f:
 		dump(data, f)
+	global CONFIG
+	CONFIG[entry] = value
 	return
 
 def resetConfig():
@@ -169,3 +183,16 @@ def addLog(data):
 	logs.append(data)
 	with open(LOGDIR, "w") as f:
 		dumpj(logs, f)
+
+###############
+def init():
+	global CONFIG
+	makedirs(op.dirname(CONFIGDIR), exist_ok = True)
+	try:
+		with open(CONFIGDIR, "rb") as f:
+			CONFIG = load(f)
+	except FileNotFoundError:
+		DEFAULTCONFIG["riotPath"] = getRiotPath()
+		with open(CONFIGDIR, "wb") as f:
+			dump(DEFAULTCONFIG, f)
+		CONFIG = DEFAULTCONFIG

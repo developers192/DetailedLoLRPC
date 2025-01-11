@@ -1,18 +1,24 @@
-from lcu_driver import Connector
-from utilities import isOutdated, GITHUBURL, CLIENTID, fetchConfig, procPath, resetLog, addLog, yesNoBox, ANIMATEDSPLASHESURL
-from cdngen import *
-from disabler import disableNativePresence
+from src.utilities import init
+init()
+
+from src.utilities import isOutdated, GITHUBURL, CLIENTID, fetchConfig, procPath, resetLog, addLog, yesNoBox
+from src.cdngen import *
+from src.disabler import disableNativePresence
+from src.tray_icon import icon, updateStatus	
+from src.modes import updateInProgressRPC
+
 from pypresence import Presence
+from lcu_driver import Connector	
+
 from time import time, sleep
 from aiohttp import request
 from os import _exit, system, path as op
-from tray_icon import icon
 from multiprocessing import Process, freeze_support
 from subprocess import Popen, PIPE
 from nest_asyncio import apply
+from asyncio import sleep as asyncSleep, create_task
 from json import loads
-from asyncio import sleep as asyncSleep
-from modes import updateInProgressRPC
+
 
 if __name__ == "__main__":
 
@@ -22,9 +28,9 @@ if __name__ == "__main__":
 
 	resetLog()
 
-	fetchConfig("riotPath")
-
 	currentChamp = (1, 0)
+	stopFlag = {"running": False}
+	loopTask = None
 
 	# Check for updates
 	outdated = isOutdated()
@@ -42,7 +48,7 @@ if __name__ == "__main__":
 	@connector.ready
 	async def connect(connection):
 		print("Inited")
-		global internalName, summonerId, discStrings, displayName, animatedSplashIds
+		global internalName, summonerId, discStrings, displayName
 		while True:
 			summoner = await connection.request('get', '/lol-summoner/v1/current-summoner')
 			if not summoner.status == 404:
@@ -59,8 +65,10 @@ if __name__ == "__main__":
 		
 		addLog({"internalName": internalName, "displayName": displayName, "summonerId": summonerId, "locale": locale})
 
+		updateStatus("Status: Loading Discord strings...")
 		async with request("GET", localeDiscordStrings(locale)) as resp:
 			discord_strings = loads((await resp.text()).encode().decode('utf-8-sig'))
+		updateStatus("Status: Loading locale strings...")
 		async with request("GET", localeChatStrings(locale)) as resp:
 			chat_strings = loads((await resp.text()).encode().decode('utf-8-sig'))
 
@@ -79,18 +87,23 @@ if __name__ == "__main__":
 		}
 		print("Loaded Discord Strings")
 
-		async with request("GET", ANIMATEDSPLASHESURL + "/skinList.json") as resp:
-			animatedSplashIds = loads((await resp.text()).encode().decode('utf-8-sig'))
-		print("Loaded Animated Splash IDs")
+		updateStatus("Status: Ready")
 
 	@connector.close
 	async def disconnect(_):
+		updateStatus("Status: Disconnected")
 		await asyncSleep(10)
 		if not procPath("LeagueClient.exe"):
 			_exit(0)
 
 	@connector.ws.register("/lol-gameflow/v1/session", event_types = ("CREATE", "UPDATE", "DELETE"))
 	async def gameFlow(connection, event):
+		global stopFlag, loopTask
+		if stopFlag["running"]:
+			stopFlag["running"] = False
+			if loopTask:
+				await loopTask
+
 		data = event.data
 		phase = data['phase']
 
@@ -114,30 +127,62 @@ if __name__ == "__main__":
 		if queueData['gameMode'] == "PRACTICETOOL":
 			queueData['description'] = discStrings["practicetool"]
 
+
+		rankEmblem = None
+		small_text = []
+		try:
+			if fetchConfig("showRanks")[queueData["type"]]:
+				rank = await (await connection.request('get', f'/lol-ranked/v1/current-ranked-stats')).json()
+				rank = rank["queueMap"][queueData["type"]]
+				if rank["tier"] != "":
+					small_text.append(f"{rank['tier'].capitalize()} {rank['division']}")
+					rankEmblem = rankedEmblem(rank['tier'])
+					if fetchConfig("rankedStats")["lp"]:
+						small_text.append(f"{rank['leaguePoints']} LP")
+					if fetchConfig("rankedStats")["w"]:
+						small_text.append(f"{rank['wins']}W")
+					if fetchConfig("rankedStats")["l"]:
+						small_text.append(f"{rank['losses']}L")
+		except KeyError:
+			pass
+
 		if phase == "Lobby":
 			if queueData["mapId"] == 0: return
+			updateStatus("Status: In Lobby")
+
 			RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
 					large_image = mapIcon(mapIconData), \
 					large_text = mapData['name'], \
+					small_image = rankEmblem, \
+					small_text = " • ".join(small_text) if small_text else None, \
 					state = discStrings["lobby"], \
-					party_size = [lobbyMem, queueData["maximumParticipantListSize"]])
+					party_size = [lobbyMem, queueData["maximumParticipantListSize"]] if fetchConfig("showPartyInfo") else None)
 			
 		elif phase == "Matchmaking":
+			updateStatus("Status: In Queue")
 			RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
 					large_image = mapIcon(mapIconData), \
 					large_text = mapData['name'], \
+					small_image=rankEmblem, \
+					small_text = " • ".join(small_text) if small_text else None, \
 					state = discStrings["inQueue"], \
 					start = time())
 			
 		elif phase == "ChampSelect":
+			updateStatus("Status: In Champ Select")
 			RPC.update(details = f"{mapData['name']} ({queueData['description']})", \
 					large_image = mapIcon(mapIconData), \
 					large_text = mapData['name'], \
+					small_image = rankEmblem, \
+					small_text = " • ".join(small_text) if small_text else None, \
 					state = discStrings["champSelect"])
 			
 		elif phase == "InProgress":
-			await updateInProgressRPC(currentChamp, mapData, mapIconData, queueData, gameData, internalName, displayName, connection, summonerId, discStrings, animatedSplashIds, RPC)
-		
+			if stopFlag["running"]: return
+			updateStatus("Status: In Game")
+			stopFlag["running"] = True
+			loopTask = create_task(updateInProgressRPC(stopFlag, time(), currentChamp, mapData, mapIconData, queueData, gameData, internalName, displayName, connection, summonerId, discStrings, RPC))
+			
 		addLog({"gameData": {"playerChampionSelections": gameData["playerChampionSelections"]}, 
 		  "queueData": {"type": queueData["type"], 
 				  "category": queueData["category"],
@@ -155,6 +200,15 @@ if __name__ == "__main__":
 		data = event.data
 		phase = (await (await connection.request('get', '/lol-gameflow/v1/gameflow-phase')).json())
 		if phase in ("None", "WaitingForStats", "TerminatedInError"):
+
+			global stopFlag, loopTask
+			if stopFlag["running"]:
+				stopFlag["running"] = False
+				if loopTask:
+					await loopTask
+
+			updateStatus("Status: Ready")
+	
 			availability = data["availability"]
 			option = fetchConfig("idleStatus")
 			if option == 0:
@@ -194,13 +248,16 @@ if __name__ == "__main__":
 	p.start()
 
 	# Start the game
+	updateStatus("Status: Starting League...")
 	if choice == "NoStart":
 		Popen([op.join(fetchConfig("riotPath"), "Riot Client", "RiotClientServices.exe"), '--launch-product=league_of_legends', '--launch-patchline=live'], stdout = PIPE, stdin = PIPE, shell = True)
 	p.join()
 
 	# Connect the RPC to Discord
+	updateStatus("Status: Connecting to Discord...")
 	RPC.connect()
 
 	# Start the LCU API
+	updateStatus("Status: Connecting to League Client...")
 	connector.start()
 	

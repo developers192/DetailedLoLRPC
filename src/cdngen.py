@@ -44,6 +44,9 @@ def availabilityImg(a):
     }
     return conv[a]
 
-from utilities import ANIMATEDSPLASHESURL
+def rankedEmblem(rank):
+    return f"https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-shared-components/global/default/{rank.lower()}.png"
+
+from src.utilities import ANIMATEDSPLASHESURL
 def animatedSplashUrl(skinId):
     return f"{ANIMATEDSPLASHESURL}/{skinId}.gif"
