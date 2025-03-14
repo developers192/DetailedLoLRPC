@@ -89,6 +89,17 @@ You can right click the tray icon to toggle various settings:
 
 If you change any settings while in the middle of a game, they will be applied the next time you start a game.
 
+<!--Known Issues-->
+## Known Issues
+If your League is stuck indefinitely in an update, you can use this workaround:
+
+1. Close the Riot Client completely (Right-click the tray icon → Close).
+2. Close DetailedLoLRPC (Right-click the tray icon → Exit).
+3. Start the Riot Client and click Update.
+4. Start DetailedLoLRPC.
+
+This issue is unavoidable due to how the program disables the native RPC. I might find a complete fix in the future. To completely avoid this issue, always start the Riot Client first, wait until you see the Play button, and then launch DetailedLoLRPC.
+
 <!-- Resource Usage -->
 ## Resource Usage
 CPU usage is ~3%. Memory usage is ~50MB.
