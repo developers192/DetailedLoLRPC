@@ -2,123 +2,157 @@
 
 <div align="center">
 
-<a href="https://github.com/developers192/DetailedLoLRPC/graphs/contributors">![GitHub Clones](https://img.shields.io/badge/dynamic/json?color=success&label=CLONES&query=count&url=https://gist.githubusercontent.com/developers192/b391985b1bdc009521df62ba977b46e2/raw/clone.json&style=for-the-badge)</a>
-<a href="https://github.com/developers192/DetailedLoLRPC/releases/latest">![GitHub All Releases](https://img.shields.io/github/downloads/developers192/DetailedLoLRPC/total.svg?style=for-the-badge)</a>
-<a href="https://github.com/developers192/DetailedLoLRPC/stargazers">![Stargazers](https://img.shields.io/github/stars/developers192/DetailedLoLRPC.svg?style=for-the-badge)</a>
-<a href="https://github.com/developers192/DetailedLoLRPC/issues">![Issues](https://img.shields.io/github/issues/developers192/DetailedLoLRPC.svg?style=for-the-badge)</a>
-<a href="https://github.com/developers192/DetailedLoLRPC/blob/master/LICENSE">![MIT License](https://img.shields.io/github/license/developers192/DetailedLoLRPC.svg?style=for-the-badge)</a>
+  <img src="images/logo.png" alt="Logo" width="120" height="120">
 
-</div>
-
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/developers192/DetailedLoLRPC">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-<h3 align="center">DetailedLoLRPC</h3>
+  <h1 align="center">DetailedLoLRPC</h1>
 
   <p align="center">
     A better Discord Rich Presence for League of Legends.
     <br />
-    <a href="https://github.com/developers192/DetailedLoLRPC/issues">Report Bug</a>
+    Now with a brand new interface and more features!
+  </p>
+  
+  <p align="center">
+    <a href="https://github.com/developers192/DetailedLoLRPC/stargazers"><img alt="Stargazers" src="https://img.shields.io/github/stars/developers192/DetailedLoLRPC?style=for-the-badge&logo=star&color=C492B1&logoColor=D9E0EE&labelColor=302D41"></a>
+    <a href="https://github.com/developers192/DetailedLoLRPC/releases/latest"><img alt="Downloads" src="https://img.shields.io/github/downloads/developers192/DetailedLoLRPC/total?style=for-the-badge&logo=github&color=A6E3A1&logoColor=D9E0EE&labelColor=302D41"></a>
+    <a href="https://github.com/developers192/DetailedLoLRPC/issues"><img alt="Issues" src="https://img.shields.io/github/issues/developers192/DetailedLoLRPC?style=for-the-badge&logo=gitea&color=F38BA8&logoColor=D9E0EE&labelColor=302D41"></a>
+    <a href="https://github.com/developers192/DetailedLoLRPC/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/developers192/DetailedLoLRPC?style=for-the-badge&logo=apache&color=89B4FA&logoColor=D9E0EE&labelColor=302D41"></a>
+  </p>
+
+  <h3>
+    <a href="https://github.com/developers192/DetailedLoLRPC/releases/latest"><strong>Download Latest Release »</strong></a>
+  </h3>
+  
+  <p align="center">
+    <a href="#-about-the-project">About</a>
     ·
-    <a href="https://github.com/developers192/DetailedLoLRPC/issues">Request Feature</a>
+    <a href="#-getting-started">Getting Started</a>
+    ·
+    <a href="https://github.com/developers192/DetailedLoLRPC/issues">Report Bug</a>
   </p>
 </div>
 
-
-<!-- ABOUT THE PROJECT -->
-## About The Project
-<div align="center">
-  <a href="https://github.com/developers192/DetailedLoLRPC">
-    <img src="images/screenshot.png" alt="Logo1">
-  </a>
-  <a href="https://github.com/developers192/DetailedLoLRPC">
-    <img src="images/screenshot2.png" alt="Logo2">
-  </a>
-</div>
-
-This project was created as a replacement for League of Legends' outdated Discord Rich Presence.
-
-## Features
-- Display your current skin instead of default splash arts
-- Updated splash arts for outdated ones
-- Proper splash arts for newer champions
-- More detailed mode texts (Ranked Solo/Duo/Flex, TFT Double Up, ...)
-
-And many more ...
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-To start using DetailedLoLRPC, follow these steps:
-
-### Prerequisites
-
-- Windows 7 and above
-- League of Legends
-- Discord
+## 📖 About The Project
 
 
-### Installation & Usage
 
-1. Download the latest [Release](https://github.com/developers192/DetailedLoLRPC/releases/latest) (It might be flagged by your antivirus, whitelist it if that's the case)
-2. Make sure LoL is not running. Run `DetailedLoLRPC.exe`
-3. If the Riot Client is not running, you'll have to manually specify the required path.
-4. League of Legends will now automatically run with its Rich Presence replaced with DetailedLoLRPC.
+![Screenshot1](images/screenshot.png) ![Screenshot2](images/screenshot2.png)
 
+DetailedLoLRPC enhances your League of Legends experience on Discord by providing a much more detailed and customizable Rich Presence. It replaces the default, outdated LoL Rich Presence with accurate champion information, skin splashes, in-game stats, and much more.
 
-<!-- USAGE EXAMPLES -->
-## Options
+With the release of **v5.0.0**, DetailedLoLRPC has been rebuilt from the ground up, featuring a modern graphical user interface (GUI) for easy configuration and a host of new capabilities.
 
-You can right click the tray icon to toggle various settings:
-- "Use skin's splash and name": Display the current skin's splash and name on Discord. If disabled, default skin and champion name will be used instead.
-- "Use animated splash if available": If a skin has an animated splash art (typically Ultimate or $500 skins), use it instead of the static image.
-- "Show "View splash art" button": Display a button on Discord that allows viewing the current skin's splash.
-- "Show party info": Show party member count on Discord
+## ✨ Features
 
-- "Ingame stats": Choose which ingame stats to show (KDA, CS, Level)
-- "Show ranks": Choose which mode to show your rank (Solo, Flex, TFT, Double up)
-- "Ranked stats": Choose which ranked stats to show (LP, Wins, Losses)
-- "Idle status": Choose an idling status to show on Discord (If this doesn't update first try, you can try creating and leaving a lobby)
+DetailedLoLRPC is packed with features to make your LoL presence on Discord shine:
 
-- "Reset preferences": Reset all settings to their default values. You have to use this if you want to move your Riot Games folder to another directory.
-- "Report bug": Open the the page to report a bug and the folder containing the necessary logs.
-- "Exit": Exit DetailedLoLRPC (LoL's native RPC will not be re-enabled until the next time you start LoL using the Riot Client)
+* **✨ Brand New GUI (v5.0.0):** A modern, intuitive interface for easy settings management.
+* **🚀 One-Click In-App Updates (v5.0.0):** Update the application directly from the GUI.
+* **🎨 Display Current Skin:** Shows the splash art and name of the skin you're using, not just the default.
+* **🖼️ Updated & Proper Splash Arts:** Uses correct and up-to-date splash arts for all champions, including newer ones.
+* **🎭 Animated Splash Arts:** Option to display animated splash arts for skins that have them (e.g., Ultimate skins).
+* **📄 Detailed Mode Texts:** Accurately displays game modes like Ranked Solo/Duo/Flex, TFT Double Up, Arena, etc.
+* **🎮 Full Game Mode Support:** Rich Presence is active for all modes, including Summoner's Rift, ARAM, TFT, and all rotating gamemodes.
+* **⏳ Loading Screen RPC (v5.0.0):** Shows when you're on the loading screen.
+* **🤫 Mute RPC Functionality (v5.0.0):** Temporarily mute/unmute Rich Presence via GUI or tray menu.
+* **📍 Customizable Map Icons (v5.0.0):** Choose from 5 different styles for the map icon.
+* **⚙️ Import/Export Settings (v5.0.0):** Easily backup and transfer your configurations.
+* **📊 In-Game Stats:** Display KDA, CS, and Level.
+* **🏆 Rank Display:** Show your rank for various modes (Solo, Flex, TFT, Double Up).
+* **📈 Ranked Stats:** Option to display LP, Wins, and Losses.
+* **🎉 Party Info:** Show the number of members in your party.
+* **👤 Enhanced Idle Status Customization (v5.0.0):**
+    * **Profile Info Mode:** Display Riot ID, Tagline, or Summoner Level.
+    * **Custom Idle Status:** Set a custom image (via URL) and text, with optional availability status and time elapsed.
+* **⏱️ Improved Timer Syncing (v5.0.0):** Accurate in-game timers in Rich Presence.
+* **⚡ Immediate RPC Updates:** Changes to configuration apply instantly.
 
-If you change any settings while in the middle of a game, they will be applied the next time you start a game.
+## 🚀 Getting Started
 
-<!--Known Issues-->
-## Known Issues
-If your League is stuck indefinitely in an update, you can use this workaround:
+To get DetailedLoLRPC up and running:
 
-1. Close the Riot Client completely (Right-click the tray icon → Close).
-2. Close DetailedLoLRPC (Right-click the tray icon → Exit).
-3. Start the Riot Client and click Update.
-4. Start DetailedLoLRPC.
+### ✅ Prerequisites
 
-This issue is unavoidable due to how the program disables the native RPC. I might find a complete fix in the future. To completely avoid this issue, always start the Riot Client first, wait until you see the Play button, and then launch DetailedLoLRPC.
+* Windows 7 and above
+* League of Legends client installed
+* Discord desktop application running
 
-<!-- Resource Usage -->
-## Resource Usage
-CPU usage is ~3%. Memory usage is ~50MB.
+### 🛠️ Installation & Usage
 
-<!-- To do -->
-## To do
+1.  **Download:** Grab the latest `DetailedLoLRPC.exe` from the [Releases page](https://github.com/developers192/DetailedLoLRPC/releases/latest).
+    * *Note: Your browser or antivirus might flag the download. This is a false positive due to the application interacting with other processes (LoL and Discord). Please whitelist it if necessary.*
+2.  **Initial Run:**
+    * Ensure League of Legends is **not** running.
+    * Run `DetailedLoLRPC.exe`.
+3.  **Path Configuration:**
+    * If the Riot Client path is not automatically detected, the application will prompt you to specify it through the new GUI.
+4.  **Launch LoL:** DetailedLoLRPC will start the Riot Client for you. Once League of Legends is running, DetailedLoLRPC will automatically replace its native Rich Presence.
+5.  **Customize:** Use the new settings GUI (accessible from the tray icon) to tailor your Rich Presence to your liking!
 
-- [ ] Join lobby button on Discord
+## ⚙️ Settings & Customization
 
-## Will I get banned for using this?
+As of v5.0.0, most settings are managed through the new **Graphical User Interface (GUI)**, which can be opened by selecting "Open Settings" from the DetailedLoLRPC tray icon menu. Some quick toggles may also be available directly in the tray menu.
 
-In theory, no, because DetailedLoLRPC only uses the API provided by the Client itself. Although it does tamper with the `plugin-manifest.json` file to disable the native RPC, it is [fine](https://www.reddit.com/r/leagueoflegends/comments/awedjv/there_is_a_way_to_make_the_client/). I use this all the time. Regardless, although unlikely, it may change at any time.
+Key customizable options include:
 
-<!-- LICENSE -->
-## License
+* **General Presence:**
+    * `Use skin's splash and name`: Display the current skin's splash and name. (Default: Enabled)
+    * `Use animated splash if available`: Use animated splash art for eligible skins.
+    * `Show "View splash art" button`: Display a button on Discord to view the current skin's splash.
+    * `Show party info`: Display party member count.
+    * `Map Icon Style`: Choose from 5 different map icon designs.
+* **Stats:**
+    * `Ingame stats`: Select which stats to show (KDA, CS, Level).
+    * `Show ranks`: Choose for which modes to display your rank (Solo, Flex, TFT, Double Up).
+    * `Ranked stats`: Select which ranked stats to show (LP, Wins, Losses).
+* **Idle Status:**
+    * Configure what's shown when you're not in a game.
+    * **Profile Info Mode:** Display Profile icon, Riot ID, Tagline, or Summoner Level.
+    * **Custom Idle Status:** Set a custom image and text, and toggle availability/time elapsed.
+* **Application Behavior:**
+    * `Mute Rich Presence`: Temporarily disable RPC (toggle in GUI or tray).
+    * `Import/Export Settings`: Manage your application configurations.
+    * `Check for Updates`: Initiate the in-app update process.
+* **Utilities:**
+    * `Reset preferences`: Reset all settings to their default values. (Useful if you move your Riot Games folder).
+    * `Report bug`: Opens the GitHub issues page and the folder containing necessary logs.
+    * `Exit`: Close DetailedLoLRPC. (LoL's native RPC will not be re-enabled until the next time you start LoL through the Riot Client without DetailedLoLRPC running).
+
+Settings changes are generally applied instantly or after a short delay.
+
+## 💻 Resource Usage
+
+* **CPU:** Approximately 1-3% during active game state processing. Can be lower when idle.
+* **Memory:** Around 50MB.
+
+Resource usage is minimal and optimized to not impact game performance.
+
+## 📝 To Do
+
+* [ ] Implement a "Join Lobby" button on Discord.
+* [ ] More support for spectator mode.
+
+Have an idea? [Request a Feature!](https://github.com/developers192/DetailedLoLRPC/issues)
+
+## ⚠️ Will I get banned for using this?
+
+Theoretically, **no**. DetailedLoLRPC primarily uses the local API provided by the League of Legends client itself, which is intended for third-party tools. While it does modify the `plugin-manifest.json` file to disable the native Rich Presence, this method has been generally considered safe by the community.
+
+However, Riot Games' stance on any third-party application can change. While this tool is used by many (including me) without issue, **use it at your own discretion.** DetailedLoLRPC is designed to be as non-intrusive as possible.
+
+## 📜 Changelog
+
+For a detailed list of changes in each version, please see the [CHANGELOG.md](CHANGELOG.md) file.
+**v5.0.0 is a major update!** Check out the changelog for all the exciting new features and improvements.
+
+## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## Disclaimer
+## 📢 Disclaimer
+
 DetailedLoLRPC was created under Riot Games' ["Legal Jibber Jabber"](https://www.riotgames.com/en/legal) policy using assets owned by Riot Games. This project is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+
+---
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
