@@ -14,7 +14,7 @@ try:
         rankedEmblem, assetsLink, defaultTileLink,
         tftImg, mapIcon, animatedSplashUrl
     )
-    from .gamestats import getStats, API_NOT_READY_MARKER, get_current_game_time 
+    from .gamestats import getStats, API_NOT_READY_MARKER, get_current_game_time, get_active_player_champion_data
 except ImportError as e:
     print(f"Critical Error: Failed to import modules in modes.py: {e}")
     raise 
@@ -100,10 +100,8 @@ async def updateInProgressRPC(
 
         rpc_start_timestamp_to_use = int(start_time) 
 
+        # Loading RPC
         if current_game_time_from_api == API_NOT_READY_MARKER or live_game_stats_data == API_NOT_READY_MARKER:
-            logger.info(f"Game API not ready for {display_name}. Showing 'Loading Match' presence.")
-            addLog(f"In-progress RPC: API not ready for {display_name}. Showing loading.", level="INFO")
-            
             rpc_payload = {
                 "details": details_for_rpc, 
                 "state": "Loading Match...", 
@@ -117,16 +115,8 @@ async def updateInProgressRPC(
             
             state_str = locale_strings.get("inGame", "In Game")
             game_stats_parts = [state_str] 
-            if live_game_stats_data and live_game_stats_data.get("kda") is not None: 
-                stats_display_config = fetchConfig("stats")
-                if isinstance(stats_display_config, dict):
-                    if stats_display_config.get("kda") and live_game_stats_data.get("kda"):
-                        game_stats_parts.append(live_game_stats_data['kda'])
-                    if stats_display_config.get("cs") and live_game_stats_data.get("cs"):
-                        game_stats_parts.append(f"{live_game_stats_data['cs']} CS")
-                    if stats_display_config.get("level") and live_game_stats_data.get("level"):
-                        game_stats_parts.append(f"Lvl {live_game_stats_data['level']}")
             
+            # TFT
             if map_data.get("mapStringId") == "TFT":
                 large_image_key_tft = large_image_for_rpc 
                 large_text_tft = large_text_for_rpc
@@ -141,6 +131,8 @@ async def updateInProgressRPC(
                             if fetchConfig("showViewArtButton") and comp_data.get("loadoutsIcon"):
                                 buttons_list_tft = [{"label": "View Companion Art", "url": tftImg(comp_data.get("loadoutsIcon"))}]
                 rpc_payload = {"details": details_for_rpc, "large_image": large_image_key_tft, "large_text": large_text_tft, "state": " • ".join(game_stats_parts), "start": rpc_start_timestamp_to_use, "buttons": buttons_list_tft}
+            
+            # Swarm
             elif map_data.get("id") == 33: 
                 if not champ_id: actual_champ_id_for_name = 0; champ_name_for_display = "Swarm Survivor"
                 else:
@@ -151,7 +143,83 @@ async def updateInProgressRPC(
                         champ_details = await _fetch_lcu_data(connection, f'/lol-champions/v1/inventories/{summoner_id}/champions/{actual_champ_id_for_name}', "Swarm champion details")
                         if champ_details: champ_name_for_display = champ_details.get("name", "Champion")
                 rpc_payload = {"details": f"{map_name_str} (PvE)", "large_image": defaultTileLink(actual_champ_id_for_name or champ_id), "large_text": champ_name_for_display, "state": " • ".join(game_stats_parts), "start": rpc_start_timestamp_to_use}
-            else: 
+            
+            # Arena
+            elif map_data.get("gameMode") == "CHERRY":
+                if live_game_stats_data and live_game_stats_data.get("kda") is not None: 
+                    stats_display_config = fetchConfig("stats")
+                    if isinstance(stats_display_config, dict):
+                        if stats_display_config.get("kda") and live_game_stats_data.get("kda"):
+                            game_stats_parts.append(live_game_stats_data['kda'])
+                        if stats_display_config.get("level") and live_game_stats_data.get("level"):
+                            game_stats_parts.append(f"Lvl {live_game_stats_data['level']}")
+
+                if not champ_id: rpc_payload = { "details": details_for_rpc, "state": "In Game", "large_image": large_image_for_rpc, "start": rpc_start_timestamp_to_use }; logger.error("Standard game mode but champ_id is 0.")
+                else:
+                    skin_name_str = "Champion"; tile_image_key = defaultTileLink(champ_id); splash_art_url = None
+                    actual_champ_id, actual_champ_skin_id = champ_id, selected_skin_id
+                    
+                    # Bravery
+                    if champ_id == -3: 
+                        actual_champ_data = await asyncio.to_thread(get_active_player_champion_data)
+                        if actual_champ_data == API_NOT_READY_MARKER or actual_champ_data == (None, None):
+                            logger.error("Bravery: Failed to fetch active player champion data.")                   
+                        else:
+                            actual_champ_name, actual_champ_skin_id = actual_champ_data
+
+                            champ_list = await _fetch_lcu_data(connection, f'/lol-champions/v1/inventories/{summoner_id}/champions', "Bravery champion list")
+                            if champ_list and isinstance(champ_list, list):
+                                for champ_data in champ_list:
+                                    if isinstance(champ_data, dict) and champ_data.get("name") == actual_champ_name:
+                                        actual_champ_id = champ_data.get("id")
+                                        actual_champ_skin_id = (actual_champ_id * 1000 + actual_champ_skin_id) if actual_champ_skin_id else actual_champ_id * 1000
+                                        champ_skins_list = champ_data.get("skins", [])
+                                        break                                                               
+                    else:
+                        champ_skins_list = await _fetch_lcu_data(connection, f'/lol-champions/v1/inventories/{summoner_id}/champions/{champ_id}/skins', "champion skins")
+
+                    target_skin_id_to_use = actual_champ_skin_id if fetchConfig("useSkinSplash") else (actual_champ_id * 1000); found_skin_info = None
+                    if champ_skins_list and isinstance(champ_skins_list, list):
+                        for skin_info_iter in champ_skins_list:
+                            if not isinstance(skin_info_iter, dict): continue
+                            if skin_info_iter.get("id") == target_skin_id_to_use: found_skin_info = skin_info_iter; break
+                            for chroma_info in skin_info_iter.get("chromas", []):
+                                if isinstance(chroma_info, dict) and chroma_info.get("id") == target_skin_id_to_use: found_skin_info = skin_info_iter; break
+                            if found_skin_info: break
+                            for tier_info in skin_info_iter.get("questSkinInfo", {}).get("tiers", []):
+                                if isinstance(tier_info, dict) and tier_info.get("id") == target_skin_id_to_use: found_skin_info = {**skin_info_iter, **tier_info}; break
+                            if found_skin_info: break
+                        if not found_skin_info:
+                            for skin_info_iter in champ_skins_list: 
+                                if isinstance(skin_info_iter, dict) and skin_info_iter.get("isBase"): found_skin_info = skin_info_iter; target_skin_id_to_use = skin_info_iter.get("id"); break
+                        if not found_skin_info and champ_skins_list: found_skin_info = champ_skins_list[0] if isinstance(champ_skins_list[0], dict) else None; 
+                        if found_skin_info: target_skin_id_to_use = found_skin_info.get("id")
+                        
+                        if found_skin_info and isinstance(found_skin_info, dict):
+                            skin_name_str = found_skin_info.get("name", "Champion")
+                            if found_skin_info.get("isBase"): tile_image_key = defaultTileLink(actual_champ_id)
+                            elif found_skin_info.get("tilePath"): tile_image_key = assetsLink(found_skin_info["tilePath"])
+                            if found_skin_info.get("uncenteredSplashPath"): splash_art_url = assetsLink(found_skin_info["uncenteredSplashPath"])
+                            animated_video_path = found_skin_info.get("collectionSplashVideoPath")
+                            current_skin_id_for_anim_check = target_skin_id_to_use if target_skin_id_to_use is not None else actual_champ_id * 1000
+                            if animated_video_path and current_skin_id_for_anim_check in ANIMATEDSPLASHESIDS and fetchConfig("animatedSplash"):
+                                tile_image_key = animatedSplashUrl(current_skin_id_for_anim_check)
+                                if not splash_art_url and animated_video_path: splash_art_url = assetsLink(animated_video_path)
+                    buttons_list = [{"label": "View Splash Art", "url": splash_art_url}] if fetchConfig("showViewArtButton") and splash_art_url else None
+                    rpc_payload = {"details": details_for_rpc, "large_image": tile_image_key, "large_text": skin_name_str, "state": " • ".join(game_stats_parts), "start": rpc_start_timestamp_to_use, "buttons": buttons_list}
+
+            # Standard game modes
+            else:
+                if live_game_stats_data and live_game_stats_data.get("kda") is not None: 
+                    stats_display_config = fetchConfig("stats")
+                    if isinstance(stats_display_config, dict):
+                        if stats_display_config.get("kda") and live_game_stats_data.get("kda"):
+                            game_stats_parts.append(live_game_stats_data['kda'])
+                        if stats_display_config.get("cs") and live_game_stats_data.get("cs"):
+                            game_stats_parts.append(f"{live_game_stats_data['cs']} CS")
+                        if stats_display_config.get("level") and live_game_stats_data.get("level"):
+                            game_stats_parts.append(f"Lvl {live_game_stats_data['level']}")
+                            
                 if not champ_id: rpc_payload = { "details": details_for_rpc, "state": "In Game", "large_image": large_image_for_rpc, "start": rpc_start_timestamp_to_use }; logger.error("Standard game mode but champ_id is 0.")
                 else:
                     skin_name_str = "Champion"; tile_image_key = defaultTileLink(champ_id); splash_art_url = None

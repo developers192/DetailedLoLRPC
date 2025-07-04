@@ -586,14 +586,14 @@ class SettingsWindow(tk.Toplevel):
         
         if tray_module and hasattr(tray_module, 'enable_tray_menu'):
             tray_module.enable_tray_menu()
-            if logger: logger.info("SettingsWindow: Called enable_tray_menu.")
+            if logger: logger.debug("SettingsWindow: Called enable_tray_menu.")
 
         _settings_window_instance = None 
-        if logger: logger.info("SettingsWindow: Global _settings_window_instance has been set to None.") 
+        if logger: logger.debug("SettingsWindow: Global _settings_window_instance has been set to None.") 
         
         try:
             self.destroy() 
-            if logger: logger.info("SettingsWindow: self.destroy() called successfully.")
+            if logger: logger.debug("SettingsWindow: self.destroy() called successfully."); logger.info("Settings window closed.")
         except tk.TclError as e_destroy:
             if logger: logger.error(f"SettingsWindow: TclError during self.destroy(): {e_destroy}. Window might have already been destroyed.", exc_info=True)
         except Exception as e_destroy_other:

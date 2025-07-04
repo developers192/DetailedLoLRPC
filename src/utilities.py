@@ -34,7 +34,7 @@ if os.path.exists(env_path):
 else:
     logger.warning(f".env file not found at {env_path}. Some features might not work.")
 
-VERSION = "v5.0.0"
+VERSION = "v5.0.1"
 REPOURL = "https://github.com/developers192/DetailedLoLRPC/"
 GITHUBURL = REPOURL + "releases/latest"
 ISSUESURL = REPOURL + "issues/new"

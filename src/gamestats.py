@@ -1,3 +1,5 @@
+# --- This file is part of the League of Legends Live Client API integration.
+
 import requests
 import json
 import urllib3
@@ -90,8 +92,9 @@ def get_current_game_time() -> Optional[Any]: # Can return float, API_NOT_READY_
     
     if isinstance(gamestats_data, dict) and "gameTime" in gamestats_data:
         game_time = gamestats_data["gameTime"]
+        if int(game_time) < 1: # If gameTime is less than 1 second, likely not started yet
+            return API_NOT_READY_MARKER
         if isinstance(game_time, (float, int)):
-            logger.debug(f"Current game time from API: {game_time}")
             return float(game_time)
         else:
             logger.warning(f"gamestats API returned gameTime but it's not a number: {game_time}")
@@ -145,6 +148,37 @@ def getStats() -> Dict[str, Any]: # Return type can include the marker
 
     logger.warning(f"Active player '{active_summoner_name}' not found in player list or stats missing.")
     return default_stats
+
+def get_active_player_champion_data() -> Optional[Any]:
+    """
+    Fetches champion data for the active player from the Live Client API.
+    Returns API_NOT_READY_MARKER if the API is not ready, or a tuple (championName, skinId), or (None, None) on error.
+    """
+    logger.debug("Fetching active player champion data...")
+    active_name = get_active_player_summoner_name()
+    if active_name == API_NOT_READY_MARKER:
+        return API_NOT_READY_MARKER
+    if not active_name:
+        logger.warning("Could not determine active player's summoner name. Cannot fetch champion data.")
+        return (None, None)
+
+    player_list = _make_live_client_request("playerlist", "player list")
+    if player_list == API_NOT_READY_MARKER:
+        logger.debug("Player list endpoint not ready (champion data). Indicating API loading state.")
+        return API_NOT_READY_MARKER
+    if not player_list or not isinstance(player_list, list):
+        logger.warning(f"Could not retrieve or parse player list for champion data. Data: {player_list}")
+        return (None, None)
+
+    for player in player_list:
+        if isinstance(player, dict) and player.get("riotId") == active_name:
+            champion = player.get("championName")
+            skin_id = player.get("skinID")
+            logger.debug(f"Champion data for {active_name}: {champion}, skin ID: {skin_id}")
+            return (champion, skin_id)
+
+    logger.warning(f"Active player '{active_name}' not found in player list for champion data.")
+    return (None, None)
 
 if __name__ == '__main__':
     logger.info("Running gamestats.py directly for testing...")

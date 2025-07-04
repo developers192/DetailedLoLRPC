@@ -95,17 +95,18 @@ class DetailedLoLRPC:
         return "Status: Unknown"
 
     async def open_settings_gui(self):
-        logger.info("DetailedLoLRPC: open_settings_gui coroutine CALLED.")
+        logger.info("Settings GUI requested.")
+        logger.debug("DetailedLoLRPC: open_settings_gui coroutine CALLED.")
         if self.shutting_down:
             logger.warning("DetailedLoLRPC: Attempted to open settings GUI during shutdown. Aborting.")
             return
         try:
-            logger.info("DetailedLoLRPC: Attempting to launch settings GUI...")
+            logger.debug("DetailedLoLRPC: Attempting to launch settings GUI...")
             gui_module.launch_settings_gui( 
                 current_status_getter=self.get_current_app_status_for_gui,
                 rpc_app_ref=self
             )
-            logger.info("DetailedLoLRPC: launch_settings_gui function call COMPLETED (GUI scheduled).")
+            logger.debug("DetailedLoLRPC: launch_settings_gui function call COMPLETED (GUI scheduled).")
         except Exception as e:
             logger.error(f"DetailedLoLRPC: Error launching settings GUI: {e}", exc_info=True)
             addLog(f"GUI Error: Failed to launch settings: {str(e)}", level="ERROR")
@@ -117,7 +118,7 @@ class DetailedLoLRPC:
             logger.warning("Cannot schedule presence refresh: Main loop not available or not running.")
 
     async def _config_change_listener(self):
-        logger.info("Config change listener started.")
+        logger.debug("Config change listener started.")
         while not self.shutting_down:
             try:
                 await self.config_changed_event.wait()
@@ -129,23 +130,23 @@ class DetailedLoLRPC:
                 # If RPC mute state changed, we might need to clear current presence
                 if 'isRpcMuted' in self.config_changed_event._flag_name_for_debug if hasattr(self.config_changed_event, '_flag_name_for_debug') else True: # Heuristic
                     if fetchConfig("isRpcMuted") and self.rpc_connected:
-                        logger.info("RPC Mute enabled via config change, clearing presence.")
+                        logger.info("RPC Mute enabled, clearing presence.")
                         await self._update_rpc_presence(clear=True) # Ensure presence is cleared if muted
                     elif not fetchConfig("isRpcMuted"):
-                         logger.info("RPC Unmuted via config change, refreshing presence.")
+                         logger.info("RPC Unmuted, refreshing presence.")
                          # Refresh will be handled by the create_task below
                 
                 logger.info(f"Config change detected. Refreshing presence. Muted: {fetchConfig('isRpcMuted')}")
                 asyncio.create_task(self.refresh_current_presence())
                 self.config_changed_event.clear()
             except asyncio.CancelledError:
-                logger.info("Config change listener task cancelled.")
+                logger.debug("Config change listener task cancelled.")
                 break
             except Exception as e:
                 logger.error(f"Error in config change listener: {e}", exc_info=True)
                 self.config_changed_event.clear()
                 await asyncio.sleep(5)
-        logger.info("Config change listener stopped.")
+        logger.debug("Config change listener stopped.")
 
     async def refresh_current_presence(self):
         logger.info("Attempting to refresh current presence...")
@@ -178,7 +179,7 @@ class DetailedLoLRPC:
             logger.warning("Refresh Presence: Could not get current gameflow phase. Clearing RPC.")
             await self._update_rpc_presence(clear=True); return
             
-        logger.info(f"Refresh Presence: Live phase from HTTP is '{live_phase_from_http}'.")
+        logger.info(f"Refresh Presence: Live phase is '{live_phase_from_http}'.")
 
         actively_managed_by_gameflow = ("Lobby", "Matchmaking", "ChampSelect", "InProgress")
         idle_or_post_game_phases = ("None", "TerminatedInError", "WaitingForStats", "PreEndOfGame", "EndOfGame")
@@ -268,7 +269,7 @@ class DetailedLoLRPC:
         logger.info(f"Locale set to: {self.summoner_data['locale']}")
 
         async with aiohttp.ClientSession() as session:
-            logger.info(f"AIOHTTP session for locale strings created: {id(session)}")
+            logger.debug(f"AIOHTTP session for locale strings created: {id(session)}")
             discord_strings = await self._fetch_json_from_url(session, localeDiscordStrings(self.summoner_data['locale']), "Discord strings")
             chat_strings = await self._fetch_json_from_url(session, localeChatStrings(self.summoner_data['locale']), "chat strings")
             

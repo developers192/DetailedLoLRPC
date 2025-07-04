@@ -88,7 +88,7 @@ async def main_application_runner():
         rpc_app = DetailedLoLRPC()
         if hasattr(tray_module, 'setup_rpc_app_reference'):
             tray_module.setup_rpc_app_reference(rpc_app)
-            logger.info("rpc_app reference passed to tray_module.")
+            logger.debug("rpc_app reference passed to tray_module.")
         else:
             logger.error("tray_module does not have setup_rpc_app_reference. Tray icon callbacks might not work as expected.")
         

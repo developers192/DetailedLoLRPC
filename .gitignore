@@ -1,0 +1,16 @@
+*.exe
+*.lnk
+*.spec
+*.bat
+*.txt
+
+.vscode/
+__pycache__/
+build/
+dist/
+Release/
+
+Lib/
+Scripts/
+pyvenv.cfg
+test.json
